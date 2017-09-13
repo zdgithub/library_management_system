@@ -40,7 +40,7 @@ class Borrows extends Model
     public function fine()
     {
         if ($this->status() != 'Charging Fine') {
-            return 'Rs. 0';
+            return '￥：0';
         }
 
         $today = Carbon::today();
@@ -51,6 +51,6 @@ class Borrows extends Model
 
         $total_fine = $fine_amount * $days_gone;
 
-        return 'RS. '.$total_fine;
+        return '￥：'.$total_fine;
     }
 }
