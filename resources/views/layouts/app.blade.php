@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title')-LMS</title>
+    <title>LMS</title>
 
     <!-- Styles -->
     <link href="{{asset('css/app.css')}}" rel="stylesheet">
@@ -27,27 +27,21 @@
   <div class="modal-dialog">
     <div class="modal-content" id="def-modal-content">
       <div class="modal-header" id="modalHeader">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="modalTitle"></h4>
       </div>
       <div class="modal-body" id="modalBody">
       </div>
-      <div class="modal-footer" id="modalFooter">
-      </div>
+      <div class='modal-footer' id='modalFooter'></div>
     </div>
   </div>
 </div>
+
 <script>
 function closeModal(){
-  $('#default-modal').modal("hide");
+  $('#def-modal').modal("hide");
 }
 
-function deleteModal(id,item){
-
-  $.get('{{url("/")}}/modal/delete/'+item+'/'+id,function(data){
-    $('#def-modal-content').html(data);
-  });
-
-  $('#def-modal').modal('show');
-}
 </script>
 <body>
     <div id="app">
@@ -141,7 +135,7 @@ function deleteModal(id,item){
     <script>
     function showProfile(){
         $.get('{{url("/")}}/profile',function(data){
-            $('.modal-header').html("<h4><span class='fa fa-user'></span> Profile</h4>");
+            $('.modal-title').html("<h4><span class='fa fa-user'></span> Profile</h4>");
             $('.modal-body').html(data);
         });
         $('#def-modal').modal("show");

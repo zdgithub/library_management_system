@@ -1,33 +1,33 @@
 @extends('layouts.app')
 
-@section('title','Lend A Book')
+@section('title','Borrowed Book')
 
 @section('content')
+<br>
 <div class="col-sm-12">
     <div class="panel">
         <div class="panel-heading">
             <button onclick="lend()" class="btn btn-success pull-right">Lend a book</button>
-            <h3>Total Recent Borrows</h3>
+            <h3>Total Borrows</h3>
             <div>
-                <a href="{{url('borrows')}}" class="btn btn-success">All</a>
+                <!-- <a href="{{url('borrows')}}" class="btn btn-success">All</a>
                 <a href="{{url('borrows')}}?mode=cleared" class="btn btn-primary">Cleared</a>
-                <a href="{{url('borrows')}}?mode=lost" class="btn btn-danger">Losted</a>
+                <a href="{{url('borrows')}}?mode=lost" class="btn btn-danger">Losted</a> -->
             </div>
             <span class="pull-right">{{$borrows->links()}}</span>
         </div>
         <div class="panel-body">
-
             <table class="table responsive-table">
                 <tbody>
                     <tr>
                         <th>
-                            S.N
+                            No.
                         </th>
                         <th>
-                            Book Name
+                            Book Title
                         </th>
                         <th>
-                            Borrower's Name
+                            Borrower Name
                         </th>
                         <th>
                             Status
@@ -35,9 +35,9 @@
                         <th>
                             Fine
                         </th>
-                        <th>
+                        <!--<th>
                             Action
-                        </th>
+                        </th>-->
                     </tr>
                     @foreach($borrows as $borrow)
                     <tr @if($borrow->cleared == true) class="success" @elseif($borrow->status() == 'Charging Fine') class="warning" @endif>
@@ -68,7 +68,7 @@
                         <td>
                             {{$borrow->fine()}}
                         </td>
-                        <td>
+                        <!--<td>
                                 @if($borrow->lost == true)
                                 <button onclick="_rev_loss_({{$borrow->id}})" class="btn btn-danger">
                                     Revert Loss
@@ -94,7 +94,7 @@
                                 Unclear
                                 </button>
                                 @endif
-                        </td>
+                        </td> -->
                     </tr>
                     @endforeach
                 </tbody>

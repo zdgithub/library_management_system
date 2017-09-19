@@ -20,7 +20,7 @@ class BorrowersController extends Controller
         $this->validate($request, array(
         'name' => 'required|min:2',
         'contact_number' => 'required|numeric|min:8',
-        'address' => 'required|min:8',
+        'address' => 'required',
       ));
 
         $borrower = new Borrowers();

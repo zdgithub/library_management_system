@@ -1,12 +1,12 @@
 <div class="top-panel">
     <span class="top-elements">
-        <a href="{{url('/')}}"><span class="fa fa-home"></span> Home</a>
-
-        <a href="{{url('books')}}"><span class="fa fa-book"></span> Books</a>
-        <a href="{{url('borrows')}}"><span class="fa fa-share"></span> Lend Book</a>
+        <a href="{{url('/')}}"><span class="fa fa-home"></span> Dashboard</a>
+        <a href="{{url('addbook')}}"><span class='fa fa-plus'></span>Add Book</a>
+        <a href="{{url('books')}}"><span class="fa fa-book"></span>Books List</a>
         <a href="{{url('borrowers')}}"><span class="fa fa-users"></span> Borrowers</a>
-        <a href="{{url('settings')}}"><span class="fa fa-cog"></span> Settings</a>
-        <a href="{{url('contact_us')}}"><span class="fa fa-phone"></span> Contact Us</a>
+        <a href="{{url('borrows')}}"><span class="fa fa-share"></span> Borrowed Books</a>
+        <!--<a href="{{url('settings')}}"><span class="fa fa-cog"></span> Settings</a> -->
+        <!--<a href="{{url('contact_us')}}"><span class="fa fa-phone"></span> Contact Us</a> -->
     </span>
 </div>
 

@@ -1,21 +1,39 @@
-<div>
-    <form class="form" method="POST" action="{{route('book.add')}}">
-        @if(\Session::get('book_add_error'))
-            <div class="alert alert-danger">{{\Session::get('book_add_error')}} <span class="close" data-dismiss="alert">&times;</span></div>
-        @endif
-        <label>Book name:</label>
-        <input class="form-control" name="book_name" placeholder="Enter Book's Name"/><br>
+@extends('layouts.app')
 
-        <label>Author's name:</label>
-        <input class="form-control" name="author_name" placeholder="Enter Author's Name" /><br>
+@section('title','addBook')
 
-        <label>Price:</label>
-        <input class="form-control" name="book_price" placeholder="Enter Book's Price" /><br>
+@section('content')
+<br>
+<div class="col-sm-12">
+    <div class="panel">
+        <div class="panel-heading">
+            <h4><span class="fa fa-plus"></span> Add Books</h4>
+        </div>
+        <div class="panel-body">
+            <div>
+                <form class="form" method="POST" action="{{route('book.add')}}">
+                    @if(\Session::get('book_add_error'))
+                        <div class="alert alert-danger">{{\Session::get('book_add_error')}} <span class="close" data-dismiss="alert">&times;</span></div>
+                    @endif
+                    <label>Book name:</label>
+                    <input class="form-control" name="book_name" placeholder="Enter Book's Name"/><br>
 
-        <label>Number Of Copies:</label>
-        <input class="form-control" name="number_of_copies" placeholder="Enter Number Of Copies" /><br>
+                    <label>Author's name:</label>
+                    <input class="form-control" name="author_name" placeholder="Enter Author's Name" /><br>
 
-        <input type="hidden" name="_token" value="{{\Session::token()}}" />
-        <button type="submit" class="form-control btn btn-success"><span class="fa fa-plus-circle"></span> Add</button>
-    </form>
+                    <label>Price:</label>
+                    <input class="form-control" name="book_price" placeholder="Enter Book's Price" /><br>
+
+                    <label>Number Of Copies:</label>
+                    <input class="form-control" name="number_of_copies" placeholder="Enter Number Of Copies" /><br>
+
+                    <input type="hidden" name="_token" value="{{\Session::token()}}" />
+                    <button type="submit" class="form-control btn btn-success"><span class="fa fa-plus"></span> Add</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+@endsection
+
+

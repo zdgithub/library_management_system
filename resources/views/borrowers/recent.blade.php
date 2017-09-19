@@ -2,7 +2,7 @@
     <tbody>
         <tr>
             <th>Name</th>
-            <th>Contact No.</th>
+            <th>Contact</th>
             <th>Fine</th>
         </tr>
 

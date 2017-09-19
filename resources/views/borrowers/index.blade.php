@@ -3,13 +3,14 @@
 @section('title','Borrowers')
 
 @section('content')
+<br>
 <div class="content">
 
   <div class="col-sm-6">
     <div class="panel">
 
       <div class="panel-heading">
-        <h4>Recent Borrowers</h4>
+        <h4>Total Borrowers</h4>
       </div>
       <div class="panel-body">
         @include('borrowers.recent')

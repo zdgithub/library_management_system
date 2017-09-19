@@ -1,7 +1,7 @@
 <table class ="table table-hover">
     <tbody>
         <tr>
-            <th>B. No</th>
+            <th>No.</th>
             <th>Title</th>
             <th>Author</th>
         </tr>

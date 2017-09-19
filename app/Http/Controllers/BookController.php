@@ -14,6 +14,11 @@ class BookController extends Controller
         return \View::make('books.index')->with('books', $books);
     }
 
+    public function addbookview()
+    {
+        return \View::make('books.add');
+    }
+
     public function add(Request $request)
     {
         $this->validate($request, array(
@@ -71,13 +76,19 @@ class BookController extends Controller
         return \View::make('books.view')
       ->with('book', $book)
       ->with('borrows', $borrows);
-  }else{
-      return \Redirect::to('/');
+       }else{
+         return \Redirect::to('/');
 
-  }
+       }
     }
 
-    public function deleteBook($id)
+    public function deleteBook(Request $request)
+    {
+        Books::where('id', $request->id)->delete();
+        return \Redirect::to(route('books'));
+    }
+
+    public function deleteBookView($id)
     {
         return \View::make('books.delete')->with('id', $id);
     }
