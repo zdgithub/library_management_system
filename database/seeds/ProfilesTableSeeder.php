@@ -2,16 +2,15 @@
 
 use Illuminate\Database\Seeder;
 
-
-class BorrowsTableSeeder extends Seeder
+class ProfilesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * @return void
      */
     public function run()
     {
-        // DB::table('borrows')->insert([
-        //     []
-        // ])
+        //
     }
 }

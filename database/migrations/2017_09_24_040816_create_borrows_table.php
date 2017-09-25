@@ -13,14 +13,17 @@ class CreateBorrowsTable extends Migration
     {
         Schema::create('borrows', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('book_id')->unsigned();
-            $table->integer('borrower_id')->unsigned();
-            $table->boolean('lost');
-            $table->boolean('cleared');
-            $table->foreign('book_id')->references('id')->on('books');
-            $table->foreign('borrower_id')->references('id')->on('borrowers');
+            $table->unsignedInteger('book_item_id');
+            $table->integer('user_id')->unsigned();
+            $table->dateTime('borrow_date');
+            $table->dateTime('return_date');
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('book_item_id')->references('id')->on('book_items');
+
             $table->timestamps();
         });
+
     }
 
     /**

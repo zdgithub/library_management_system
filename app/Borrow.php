@@ -1,20 +1,20 @@
 <?php
 
-namespace app;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
-class Borrows extends Model
+class Borrow extends Model
 {
-    public function borrowers()
+    public function user()
     {
-        return $this->hasOne('\App\Borrowers', 'id','borrower_id');
+        return $this->belongsTo('App\User', 'user_id');
     }
 
-    public function book()
+    public function bookItem()
     {
-        return $this->hasOne('\App\Books', 'id', 'book_id');
+        return $this->belongsTo('App\BookItem', 'book_item_id');
     }
 
     public function status()
@@ -27,7 +27,7 @@ class Borrows extends Model
         if ($this->lost == 1){
             return 'Lost';
         }
-        
+
         if ($this->cleared == true) {
             return 'Cleared';
         }

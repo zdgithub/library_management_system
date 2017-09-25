@@ -11,16 +11,9 @@ class BooksTableSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Faker::create();
-        foreach (range(0, 15) as $i) {
-            Books::create(array(
-
-            'name' => $faker->firstNameFemale,
-            'author' => $faker->name,
-            'borrows' => rand(0, 10),
-            'price' => rand(150, 1000),
-            'number_of_copies' => rand(0,20),
-        ));
-        }
+        DB::table('books')->insert([
+          ['isbn' => '978-7-115-39409-5', 'name' => 'The Little Prince', 'author' => 'Helen','publisher' => 'Beijing Industry Press', 'price' => '32.41', 'total_num' => 10],
+          ['isbn' => '960-1-123-12223-4', 'name' => 'Oliver Twist', 'author' => 'Mike', 'publisher' => 'Telecom Press', 'price' => '15.64', 'total_num' => 6]
+        ]);
     }
 }
