@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Book;
+use App\BookItem;
 
 class BookController extends Controller
 {
@@ -40,6 +41,42 @@ class BookController extends Controller
 //返回图书列表页面
         return \Redirect::to(route('books'));
     }
+//添加一本copy get
+    public function addCopyView($id)
+    {
+        return \View::make('books.addcopy')
+                        ->with('book_id', $id);
+    }
+//添加一本copy post
+    public function addCopy(Request $request)
+    {
+        $this->validate($request, array(
+          'barcode' => 'required',
+          'book_id' => 'required',
+        ));
+        $copy = new BookItem();
+        $copy->barcode = $request->barcode;
+        $copy->location = $request->location;
+        $copy->book_id = $request->book_id;
+        $copy->state = 1;
+        $copy->save();
+
+        return \Redirect::to(url('/book/'.$request->book_id));
+    }
+
+    public function deleteCopyView($id)
+    {
+        return \View::make('books.deletecopy')->with('id', $id);
+    }
+
+    public function deleteCopy(Request $request)
+    {
+        $item = BookItem::where('id', $request->id)->first();
+
+        BookItem::where('id', $request->id)->delete();
+        return \Redirect::to(url('/book/'.$item->book->id));
+    }
+
 //编辑图书的modal框
     public function editBookView($id)
     {

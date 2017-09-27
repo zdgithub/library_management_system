@@ -34,7 +34,10 @@
 <div class="col-sm-6">
 <div class="panel">
     <div class="panel-heading">
-        <h4><span class="fa fa-check-circle"></span> All Copies</h4>
+        <h4>
+          <span class="fa fa-check-circle"></span> All Copies
+          <button onclick="addCopy({{$book->id}})" class="btn btn-primary pull-right"><span class="fa fa-plus"></span> Add</button>
+        </h4>
     </div>
     <div class="panel-body">
       <table class="table table-hover">
@@ -43,6 +46,7 @@
             <th>Barcode</th>
             <th>Location</th>
             <th>Status</th>
+            <th>Action</th>
           </tr>
         @foreach($bookItems as $item)
           <tr>
@@ -55,15 +59,52 @@
             <div class="label label-success">{{$item->status()}}</div>
             @endif
             </td>
+            <td>
+            <button type='button' class="btn btn-danger" onclick ="deleteCopyModal({{$item->id}})"> Delete
+            </button></td>
           </tr>
         @endforeach
-
       </tbody>
       </table>
     </div>
 </div>
 </div>
 <script>
+function addCopy(id){
+    $.get("{{url('/')}}/addcopy/"+id,function(data){
+        $('#def-modal-content').html(data);
+    });
+    $('#def-modal').modal('show');
+}
+
+// function deleteCopy(id){
+//     $.ajax({
+//             url: "{{url('/')}}/deletecopy/"+id,
+//             method: "POST",
+//             data: {_token:"{{Session::token()}}"},
+//     }).fail((data) => {
+//         console.log(data);
+//     }).done((data) => {
+//         $('#copymodal').hide();
+//         location.reload();
+//     });
+// }
+
+function deleteCopyModal(id){
+    $.get('{{url("/")}}/deletecopy/'+id,function(dataHTML){
+    $('#modalTitle').html("<h4>Delete the Book Copy</h4>");
+    $('#modalBody').html(dataHTML);
+    $('#modalFooter').html("<button type='button' data-dismiss='modal' class='btn btn-danger pull-left'>Cancel</button>\
+            <button onclick=\"deleteCopyInfo()\" class='btn btn-primary pull-right'>Delete</button></form>")
+    });
+
+    $('#def-modal').modal('show');
+}
+
+function deleteCopyInfo(){
+    document.getElementById('deleteCopyButton').click();
+}
+
 function showBookInfo(id){
     $.get("{{url('/')}}/book/edit/"+id,function(dataHTML){
         $('#modalTitle').html("<h4>Book's Information</h4>");

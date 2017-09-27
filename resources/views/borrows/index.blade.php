@@ -84,19 +84,6 @@
         $('#def-modal').modal('show');
     }
 
-    // function _clear_(id)
-    // {
-
-    //     $.ajax({
-    //         url: "{{url('/')}}/borrow/clear/"+id,
-    //         method: "POST",
-    //         data: {_token:"{{\Session::token()}}"},
-    //     }).fail((data) => {
-    //         console.log(data);
-    //     }).done((data) => {
-    //         location.reload();
-    //     });
-    // }
 
 </script>
 @endsection

@@ -49,6 +49,13 @@ Route::group(['middleware' => 'auth'], function () {
 // 借出一本书
     Route::get('lend', 'BorrowController@lendView');
     Route::post('lend', 'BorrowController@lend');
+// 添加一本copy
+    Route::get('addcopy/{id}','BookController@addCopyView');
+    Route::post('addcopy','BookController@addCopy');
+
+    Route::get('deletecopy/{id}', 'BookController@deleteCopyView');
+    Route::post('deletecopy', 'BookController@deleteCopy')->name('copy.delete');
+
 
     Route::get('borrowers', 'BorrowersController@index')->name('borrowers');
     Route::post('borrowers', 'BorrowersController@add')->name('borrowers.add');
