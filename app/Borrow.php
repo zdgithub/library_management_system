@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 class Borrow extends Model
 {
+    protected $dates = ['created_at', 'updated_at', 'borrow_date'];
     public function user()
     {
         return $this->belongsTo('App\User', 'user_id');
@@ -16,40 +17,39 @@ class Borrow extends Model
     {
         return $this->belongsTo('App\BookItem', 'book_item_id');
     }
+//应还日期
+    public function receiveDate()
+    {
+        return $this->borrow_date->addDays(30);
+    }
 
     public function status()
     {
-        $today = Carbon::today();
-        $issued = Carbon::parse($this->created_at);
-        $issue_interval = \DB::table('libraries')->get()->first()->issue_interval;
-        $days_left = $issue_interval - $today->diffInDays($issued);
+        if ($this->bookItem->state == 0) {
+            $today = Carbon::today();
+            $receive = $this->receiveDate();
+            $days_left = $today->diffInDays($receive, false);
 
-        if ($this->lost == 1){
-            return 'Lost';
+            if ($days_left < 0) {
+                return 'Charging Fine';
+            }
+            return $days_left.' Days Left';
         }
 
-        if ($this->cleared == true) {
-            return 'Cleared';
-        }
-        if ($days_left <= 0) {
-            return 'Charging Fine';
-        }
-        return $days_left.' Days Left';
+        return 'Returned';
     }
 
     public function fine()
     {
         if ($this->status() != 'Charging Fine') {
-            return '￥：0';
+            return '￥：0.0';
         }
 
         $today = Carbon::today();
-        $issued = Carbon::parse($this->created_at);
-        $issue_interval = \DB::table('libraries')->get()->first()->issue_interval;
-        $days_gone = $today->diffInDays($issued) - $issue_interval;
-        $fine_amount = \DB::table('libraries')->get()->first()->fine_amount;
+        $receive_date = $this->receiveDate();
+        $days_gone = $receive_date->diffInDays($today, false);
 
-        $total_fine = $fine_amount * $days_gone;
+        $total_fine = 0.1 * $days_gone;
 
         return '￥：'.$total_fine;
     }

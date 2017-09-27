@@ -18,5 +18,13 @@ class BookItem extends Model
       return $this->hasMany('App\Borrow', 'book_item_id');
     }
 
+    public function status()
+    {
+        if ($this->state == 1){
+            return 'available';
+        }else if($this->state == 0){
+            return 'borrowed';
+        }
+    }
 
 }

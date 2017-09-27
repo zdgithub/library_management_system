@@ -1,33 +1,27 @@
 @extends('layouts.app')
 
-@section('title','Borrowed Book')
+@section('title','Borrow Books')
 
 @section('content')
 <br>
 <div class="col-sm-12">
     <div class="panel">
         <div class="panel-heading">
-            <button onclick="lend()" class="btn btn-success pull-right">Lend a book</button>
+            <button onclick="lend()" class="btn btn-primary pull-right">lend a book</button>
             <h3>Total Borrows</h3>
-            <div>
-                <!-- <a href="{{url('borrows')}}" class="btn btn-success">All</a>
-                <a href="{{url('borrows')}}?mode=cleared" class="btn btn-primary">Cleared</a>
-                <a href="{{url('borrows')}}?mode=lost" class="btn btn-danger">Losted</a> -->
-            </div>
-            <span class="pull-right">{{$borrows->links()}}</span>
         </div>
         <div class="panel-body">
-            <table class="table responsive-table">
-                <tbody>
+            <table class="table responsive-table table-striped" id='borrowtable'>
+                <thead>
                     <tr>
                         <th>
-                            No.
+                            Borrower
                         </th>
                         <th>
-                            Book Title
+                            Barcode
                         </th>
                         <th>
-                            Borrower Name
+                            Book Name
                         </th>
                         <th>
                             Status
@@ -35,32 +29,32 @@
                         <th>
                             Fine
                         </th>
-                        <!--<th>
+                        <th>
                             Action
-                        </th>-->
+                        </th>
                     </tr>
+                </thead>
+                <tbody>
                     @foreach($borrows as $borrow)
-                    <tr @if($borrow->cleared == true) class="success" @elseif($borrow->status() == 'Charging Fine') class="warning" @endif>
+                    <tr>
                         <td>
-                            {{$borrow->id}}
+                            {{$borrow->user->name}}
+                        </td>
+                        <td>{{$borrow->bookItem->barcode}}</td>
+                        <td>
+                            {{$borrow->bookItem->book->name}}
                         </td>
                         <td>
-                            <a href="{{url('/')}}/book/{{$borrow->book_id}}">{{$borrow->book['name']}}</a>
-                        </td>
-                        <td>
-                            <a href="{{url('/')}}/borrower/{{$borrow->borrower_id}}">{{$borrow->borrowers['name']}}</a>
-                        </td>
-                        <td>
-                            @if($borrow->status() == 'Cleared')
+                            @if($borrow->status() == 'Returned')
 
                             <span class="label label-success">{{$borrow->status()}}</span>
 
                             @elseif($borrow->status() == 'Charging Fine')
 
-                            <span class="label label-warning">{{$borrow->status()}}</span>
+                            <span class="label label-danger">{{$borrow->status()}}</span>
 
                             @else
-                            <span class="label label-danger">{{$borrow->status()}}</span>
+                            <span class="label label-warning">{{$borrow->status()}}</span>
 
                             @endif
 
@@ -68,33 +62,9 @@
                         <td>
                             {{$borrow->fine()}}
                         </td>
-                        <!--<td>
-                                @if($borrow->lost == true)
-                                <button onclick="_rev_loss_({{$borrow->id}})" class="btn btn-danger">
-                                    Revert Loss
-                                </button>
-                                @else
-                                    @if($borrow->cleared == true)
-                                    <button disabled class="btn btn-danger">
-                                        Lost
-                                    </button>
-                                    @else
-                                    <button onclick="_lost_({{$borrow->id}})" class="btn btn-danger">
-                                        Lost
-                                    </button>
-                                    @endif
-                                @endif
-
-                                @if($borrow->cleared == false)
-                                <button onclick="_clear_({{$borrow->id}})" class="btn btn-success">
-                                Clear
-                                </button>
-                                @else
-                                <button onclick="_unclear_({{$borrow->id}})" class="btn btn-success">
-                                Unclear
-                                </button>
-                                @endif
-                        </td> -->
+                        <td>
+                         <button class="btn btn-default">RETURN</button>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -105,16 +75,7 @@
 </div>
 
 <script>
-    jQuery(document).ready(function($){
-        // standard on load code goes here with $ prefix
-        // note: the $ is setup inside the anonymous function of the ready command
-        $.ajaxSetup({
-            headers:
-            { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-        });
-
-    });
-
+    $('#borrowtable').dataTable();
 
     function lend(){
         $.get("{{url('/')}}/lend",function(data){
@@ -123,60 +84,19 @@
         $('#def-modal').modal('show');
     }
 
-    function _clear_(id)
-    {
+    // function _clear_(id)
+    // {
 
-        $.ajax({
-            url: "{{url('/')}}/borrow/clear/"+id,
-            method: "POST",
-            data: {_token:"{{\Session::token()}}"},
-        }).fail((data) => {
-            console.log(data);
-        }).done((data) => {
-            location.reload();
-        });
-    }
+    //     $.ajax({
+    //         url: "{{url('/')}}/borrow/clear/"+id,
+    //         method: "POST",
+    //         data: {_token:"{{\Session::token()}}"},
+    //     }).fail((data) => {
+    //         console.log(data);
+    //     }).done((data) => {
+    //         location.reload();
+    //     });
+    // }
 
-    function _unclear_(id)
-    {
-
-        $.ajax({
-            url: "{{url('/')}}/borrow/unclear/"+id,
-            method: "POST",
-            data: {_token:"{{\Session::token()}}"},
-        }).fail((data) => {
-            console.log(data);
-        }).done((data) => {
-            location.reload();
-        });
-    }
-
-    function _lost_(id)
-    {
-
-        $.ajax({
-            url: "{{url('/')}}/borrow/lost/"+id,
-            method: "POST",
-            data: {_token:"{{\Session::token()}}"},
-        }).fail((data) => {
-            console.log(data);
-        }).done((data) => {
-            location.reload();
-        });
-    }
-
-    function _rev_loss_(id)
-    {
-
-        $.ajax({
-            url: "{{url('/')}}/borrow/rev_loss/"+id,
-            method: "POST",
-            data: {_token:"{{\Session::token()}}"},
-        }).fail((data) => {
-            console.log(data);
-        }).done((data) => {
-            location.reload();
-        });
-    }
 </script>
 @endsection

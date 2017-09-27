@@ -1,57 +1,44 @@
 <?php
 
 namespace App\Http\Controllers;
+use Carbon\Carbon;
 
 use Illuminate\Http\Request;
-use App\Borrows;
-use App\Borrowers;
-use App\Books;
+use App\Borrow;
+use App\Book;
+use App\BookItem;
+use App\User;
 
 class BorrowController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $mode = $request->mode;
-
-        if($mode == "lost")
-        {
-            $borrows = Borrows::OrderBy('id', 'desc')->where('lost',1)->paginate(10);
-
-        }elseif($mode == 'cleared'){
-            $borrows = Borrows::OrderBy('id', 'desc')->where('cleared',1)->paginate(10);
-
-        }else{
-
-            $borrows = Borrows::OrderBy('id', 'desc')->paginate(10);
-
-        }
-
+        $borrows = Borrow::all();
         return \View::make('borrows.index')
         ->with('borrows', $borrows);
     }
-
+//得到借书的弹框
     public function lendView()
     {
-        $borrowers = Borrowers::all();
-        $books = Books::all();
-
-        return \View::make('borrows.lend')
-      ->with('books', $books)
-      ->with('borrowers', $borrowers);
+        return \View::make('borrows.lend');
     }
-
+//借出post
     public function lend(Request $request)
     {
         $this->validate($request, array(
-        'book_id' => 'required|numeric|exists:books,id',
-        'borrower_id' => 'required|numeric|exists:borrowers,id',
-      ));
+        'barcode' => 'required|exists:book_items,barcode',
+        'scode' => 'required|exists:profiles,scode',
+        ));
 
-        $borrow = new Borrows();
-        $borrow->book_id = $request->book_id;
-        $borrow->borrower_id = $request->borrower_id;
-        $borrow->lost = false;
-        $borrow->cleared = false;
+        $profile = \App\Profile::where('scode',$request->scode)
+                                ->first();
+        $bookItem = BookItem::where('barcode', $request->barcode)
+                                ->first();
+
+        $borrow = new Borrow();
+        $borrow->user_id = $profile->user_id;
+        $borrow->book_item_id = $bookItem->id;
+        $borrow->borrow_date = Carbon::today();
         $borrow->save();
 
         return \Redirect::to('borrows');
@@ -59,21 +46,8 @@ class BorrowController extends Controller
 
     public function clear($id)
     {
-        Borrows::where('id',$id)->update(array('cleared' => 1));
+        Borrow::where('id',$id)->update(array('cleared' => 1));
     }
+    
 
-    public function unclear($id)
-    {
-        Borrows::where('id',$id)->update(array('cleared' => 0));
-    }
-
-    public function lost($id)
-    {
-        Borrows::where('id',$id)->update(array('lost' => 1));
-    }
-
-    public function rev_loss($id)
-    {
-        Borrows::where('id',$id)->update(array('lost' => 0));
-    }
 }

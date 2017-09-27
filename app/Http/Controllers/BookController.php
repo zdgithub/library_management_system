@@ -3,91 +3,97 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Books;
+use App\Book;
 
 class BookController extends Controller
 {
     public function index()
     {
-        $books = Books::orderBy('id', 'desc')->paginate(7);
+        $books = Book::all();
 
         return \View::make('books.index')->with('books', $books);
     }
-
+//添加书籍get
     public function addbookview()
     {
         return \View::make('books.add');
     }
-
+// 添加书籍post
     public function add(Request $request)
     {
         $this->validate($request, array(
-            'book_name' => 'required|unique:books,name',
+            'isbn' => 'required|unique:books,isbn',
+            'book_name' => 'required',
             'author_name' => 'required',
-            'book_price' => 'required|integer',
-            'number_of_copies' => 'required|integer|',
+            'book_price' => 'required',
+            'total_num' => 'required|integer',
         ));
 
-        $book = new Books();
+        $book = new Book();
+        $book->isbn = $request->isbn;
         $book->name = $request->book_name;
         $book->author = $request->author_name;
         $book->price = $request->book_price;
-        $book->borrows = 0;
-        $book->number_of_copies = $request->number_of_copies;
+        $book->publisher = $request->publisher;
+        $book->total_num = $request->total_num;
         $book->save();
-
+//返回图书列表页面
         return \Redirect::to(route('books'));
     }
-
+//编辑图书的modal框
     public function editBookView($id)
     {
-        $book_info = Books::where('id', $id)->first();
+        $book_info = Book::where('id', $id)->first();
 
         return \View::make('books.edit')
-      ->with('book_info', $book_info);
+                    ->with('book_info', $book_info);
     }
     public function editBook(Request $request)
     {
         $this->validate($request, array(
-            'name' => 'required|unique:books,name',
+            'isbn' => 'required',
             'name' => 'required',
-            'price' => 'required|integer',
-            'number_of_copies' => 'required|integer|',
+            'author' => 'required',
+            'price' => 'required',
+            'total_num' => 'required|integer',
             'id' => 'required',
         ));
 
-        Books::where('id', $request->id)->update(array(
+        Book::where('id', $request->id)->update(array(
+            'isbn' => $request->isbn,
             'name' => $request->name,
             'author' => $request->author,
             'price' => $request->price,
-            'number_of_copies' => $request->number_of_copies,
+            'publisher' => $request->publisher,
+            'total_num' => $request->total_num,
         ));
 
         return \Redirect::to(url('/book/'.$request->id));
     }
 
+//返回book的详细信息
     public function view($id)
     {
-        $book = Books::where('id', $id)->first();
+        $book = Book::where('id', $id)->first();
         if($book){
 
-        $borrows = \App\Borrows::where('book_id', $book->id)->paginate(5);
+        $bookItems = \App\BookItem::where('book_id', $book->id)->get();
 
         return \View::make('books.view')
-      ->with('book', $book)
-      ->with('borrows', $borrows);
+                      ->with('book', $book)
+                      ->with('bookItems', $bookItems);
        }else{
-         return \Redirect::to('/');
+         return \Redirect::to(url('/NotFound'));
 
        }
     }
-
+//删除书籍post
     public function deleteBook(Request $request)
     {
-        Books::where('id', $request->id)->delete();
+        Book::where('id', $request->id)->delete();
         return \Redirect::to(route('books'));
     }
-
+// 删除书籍get
     public function deleteBookView($id)
     {
         return \View::make('books.delete')->with('id', $id);

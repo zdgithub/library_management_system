@@ -10,49 +10,48 @@
 | to using a Closure or controller method. Build something great!
 |
 */
+Route::get('/', function () {
+    return view('site.welcome');
+});
 
-Route::get('login', 'Auth\LoginController@showLoginForm');
-Route::post('login', 'Auth\LoginController@login');
-Route::post('logout', 'Auth\LoginController@logout');
-Route::get('contact_us', 'SiteController@contact_us');
-Route::group(['middleware' => 'auth'], function () {
-    Route::get('/search/books/byName','SearchController@searchBooks');
-
-    Route::get('/', 'SiteController@index')->name('home');
-    Route::get('/profile', 'SiteController@profile')->name('profile');
-
-    Route::get('books', 'BookController@index')->name('books'); //booklist页面
-    Route::get('addbook', 'BookController@addbookview'); //添加图书页面
-    Route::post('addbook', 'BookController@add')->name('book.add');
-    Route::get('book/{id}', 'BookController@view');
-    Route::get('book/info/{id}', 'BookController@bookInfo');
-    Route::post('book/edit', 'BookController@editBook')->name('book.edit');
-    Route::get('book/edit/{id}', 'BookController@editBookView');
-
-    Route::post('book/delete', 'BookController@deleteBook')->name('book.delete');
-    Route::get('book/delete/{id}', 'BookController@deleteBookView');
-
-    Route::get('borrowers', 'BorrowersController@index')->name('borrowers');
-    Route::post('borrowers', 'BorrowersController@add')->name('borrowers.add');
-
-    Route::get('borrows', 'BorrowController@index');
-    Route::get('lend', 'BorrowController@lendView');
-    Route::post('lend', 'BorrowController@lend');
-    Route::post('borrow/clear/{id}', 'BorrowController@clear');
-    Route::post('borrow/unclear/{id}', 'BorrowController@unclear');
-    Route::post('borrow/lost/{id}', 'BorrowController@lost');
-    Route::post('borrow/rev_loss/{id}', 'BorrowController@rev_loss');
-
-    Route::get('settings', 'SiteController@settings')->name('settings');
-    Route::post('settings', 'SiteController@settings_update')->name('settings.update');
-    Route::post('/reset_all', 'SiteController@reset_all')->name('settings.reset_all');
-
-    Route::get('/modal/delete/{db}/{id}', 'SiteController@delete');
-    Route::post('delete/', 'SiteController@deleteDo')->name('delete');
-
-
+Route::get('/NotFound', function () {
+    return view('errors.503');
 });
 
 Auth::routes();
 
-// Route::get('/home', 'HomeController@index');
+Route::group(['middleware' => 'auth'], function () {
+
+    Route::get('/home', 'SiteController@index')->name('home');
+//booklist页面
+    Route::get('books', 'BookController@index')->name('books');
+
+// 添加图书页面
+    Route::get('addbook', 'BookController@addbookview');
+    Route::post('addbook', 'BookController@add')->name('book.add');
+// 图书编辑页面
+    Route::get('book/edit/{id}', 'BookController@editBookView');
+    Route::post('book/edit', 'BookController@editBook')->name('book.edit');
+//返回book的信息
+    Route::get('book/{id}', 'BookController@view');
+// 删除book(这一类)
+    Route::get('book/delete/{id}', 'BookController@deleteBookView');
+    Route::post('book/delete', 'BookController@deleteBook')->name('book.delete');
+//welcome页根据书名查找书籍
+    Route::get('/search/books/byName','SearchController@searchBooks');
+
+//获得用户个人信息的页面
+    Route::get('profile/{id}', 'SiteController@profileView');
+    Route::post('profile', 'SiteController@profile')->name('profile.edit');
+
+// 借阅书籍的读者列表
+    Route::get('borrows', 'BorrowController@index');
+// 借出一本书
+    Route::get('lend', 'BorrowController@lendView');
+    Route::post('lend', 'BorrowController@lend');
+
+    Route::get('borrowers', 'BorrowersController@index')->name('borrowers');
+    Route::post('borrowers', 'BorrowersController@add')->name('borrowers.add');
+
+});
+

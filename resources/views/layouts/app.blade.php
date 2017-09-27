@@ -8,6 +8,7 @@
 
     <!-- Styles -->
     <link href="{{asset('css/app.css')}}" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css'>
     <link rel="stylesheet" href="{{asset('assets/jquery/jquery-ui.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/font-awesome-4.6.3/css/font-awesome.min.css')}}">
 
@@ -19,7 +20,9 @@
     </script>
     <script src="{{asset('assets/jquery/jquery.min.js')}}"></script>
     <script src="{{asset('assets/jquery/jquery-ui.min.js')}}"></script>
+    <script src='https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js'></script>
     <script src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
+    <script src='https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js'></script>
 
 </head>
 
@@ -83,7 +86,7 @@ function closeModal(){
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="#" onclick="showProfile()"><span class="fa fa-user"></span> Profile</a>
+                                        <a href='{{url("/")}}/profile/{{ Auth::user()->id }}'><span class="fa fa-user"></span> Profile</a>
                                         <a href="{{ url('/logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

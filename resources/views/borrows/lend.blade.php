@@ -5,22 +5,11 @@
 <form class="form" action="{{url('/')}}/lend" method="POST">
 
 <div class="modal-body">
-  <label>Book's Name:</label>
-  <select name="book_id" class="form-control">
-    @foreach($books as $book)
-      <option value="{{$book->id}}">
-        {{$book->name}}
-      </option>
-    @endforeach
-  </select><br />
-  <label>Borrower's Name:</label>
-  <select name="borrower_id" class="form-control">
-    @foreach($borrowers as $borrower)
-      <option value="{{$borrower->id}}">
-        {{$borrower->name}}
-      </option>
-    @endforeach
-  </select><br />
+  <label>Book's Barcode:</label>
+  <input class='form-control' name='barcode'>
+  <br />
+  <label>Student Number:</label>
+  <input class='form-control' name='scode'>
 
 </div>
 <div class="modal-footer">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Profile;
 
 class SiteController extends Controller
 {
@@ -16,82 +17,45 @@ class SiteController extends Controller
         return \View::make('site.home');
     }
 
-    public function profile()
+    public function profileView($id)
     {
-        return \View::make('site.profile');
+        $user_info = \App\Profile::where('user_id', $id)->first();
+
+        return \View::make('site.settings')
+                    ->with('rid', $id)
+                    ->with('user_info', $user_info);
     }
 
-    public function settings()
-    {
-        $site = \DB::table('libraries')->get()->first();
-
-        return \View::make('site.settings')->with('site', $site);
-    }
-
-    public function delete($db, $id)
-    {
-        \Session::flash('did', $id);
-        \Session::flash('ddb', $db);
-
-        return \View::make('site.delete');
-    }
-
-    public function reset_all(Request $request)
+    public function profile(Request $request)
     {
         $this->validate($request, array(
-        'password' => 'required',
-      ));
+            'scode' => 'required',
+        ));
 
-        if (\Hash::check($request->password, \Auth::user()->password)) {
-            \DB::statement('SET foreign_key_checks = 0');
-            \DB::table('borrows')->truncate();
-            \DB::table('books')->truncate();
-            \DB::table('borrowers')->truncate();
-
-            return \Redirect::back()->withErrors(array('Everything Cleared!'));
-        } else {
-            return \Redirect::back()->withErrors(array('Wrong Password!'));
-        }
-    }
-
-    public function settings_update(Request $request)
-    {
-        $this->validate($request, array(
-        'name' => 'required',
-        'address' => 'required',
-        'issue_interval' => 'numeric|required',
-        'fine_amount' => 'numeric|required',
-        'admin_email' => 'required|email',
-      ));
-
-        \App\Library::where('id', 1)->update(array(
-        'name' => $request->name,
-        'address' => $request->address,
-        'issue_interval' => $request->issue_interval,
-        'fine_amount' => $request->fine_amount,
-        'admin_email' => $request->admin_email,
-      ));
-
-        return \Redirect::back();
-    }
-
-    public function deleteDo(Request $request)
-    {
-        if ($did = \Session::get('did') && $ddb = \Session::get('ddb')) {
-            $did = \Session::get('did'); // I don't know but the value of $did is 1 always when I use the $did variable from if condition above
-
-        if ($ddb == 'books') {
-            $redir_url = route('books');
-            \DB::delete('DELETE FROM `borrows` WHERE `book_id`= '.$did);
-        } elseif ($ddb == 'borrowers') {
-            \DB::delete('DELETE FROM `borrows` WHERE `borrower_id`= '.$did);
+        $profile = Profile::where('user_id',$request->id)->first();
+        if($profile == null){
+            $profile = new Profile();
+            $profile->user_id = $request->id;
+            $profile->truename = $request->truename;
+            $profile->sex = $request->sex;
+            $profile->school = $request->school;
+            $profile->scode = $request->scode;
+            $profile->major = $request->major;
+            $profile->phone = $request->phone;
+            $profile->save();
+        }else {
+            Profile::where('user_id',$request->id)->update(array(
+            'truename' => $request->truename,
+            'sex' => $request->sex,
+            'school' => $request->school,
+            'scode' => $request->scode,
+            'major' => $request->major,
+            'phone' => $request->phone,
+            ));
         }
 
-            \DB::delete('DELETE FROM `'.$ddb.'` WHERE `id` = '.$did);
 
-            return \Redirect::to($redir_url);
-        } else {
-            return \Redirect::back();
-        }
+        return \Redirect::to(url('profile/'.$request->id));
     }
+
 }

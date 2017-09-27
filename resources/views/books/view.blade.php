@@ -10,19 +10,20 @@
         <h4><span class="fa fa-info-circle"></span> Book's Information</h4>
     </div>
     <div class="panel-body">
-        <label>Book Title: </label> {{$book->name}}<br>
+        <label>ISBN: </label> {{ $book->isbn }}<br>
+        <label>Book Name: </label> {{$book->name}}<br>
         <label>Author Name: </label> {{$book->author}}<br>
-        <label>Price: </label> ￥：{{$book->price}}<br>
-        <label>Number Of Copies: </label> {{$book->number_of_copies}}<br>
+        <label>Price: </label> ￥: {{$book->price}}<br>
+        <label>Publisher: </label> {{$book->publisher}}<br>
         <label>Available Copies: </label> {{$book->copies_available()}}<br />
-        <label>Total Number Of Borrows: </label> 0<br>
+        <label>Total Copies: </label> {{$book->total_num}}<br>
         <br>
         <div class="row">
             <div class='col-md-3' pull-left>
             <a href='#' onclick ="showBookInfo({{$book->id}})" class=" form-control btn btn-primary"><span class="fa fa-edit"></span> Edit</a>
             </div>
             <div class='col-md-3 pull-right'>
-            <a href='#' onclick ="deleteModal({{$book->id}},'books')" class=" form-control btn btn-danger"><span class="fa fa-trash"></span> Delete</a>
+            <a href='#' onclick ="deleteModal({{$book->id}})" class=" form-control btn btn-danger"><span class="fa fa-trash"></span> Delete</a>
             </div>
         </div>
     </div>
@@ -33,23 +34,29 @@
 <div class="col-sm-6">
 <div class="panel">
     <div class="panel-heading">
-        <h4><span class="fa fa-check-circle"></span> Recent Borrows</h4>
+        <h4><span class="fa fa-check-circle"></span> All Copies</h4>
     </div>
     <div class="panel-body">
       <table class="table table-hover">
         <tbody>
           <tr>
-            <th>Borrower Name</th>
-            <th>Issued Date</th>
+            <th>Barcode</th>
+            <th>Location</th>
             <th>Status</th>
           </tr>
-        <!--@foreach($borrows as $borrow_event)
+        @foreach($bookItems as $item)
           <tr>
-            <td>{{$borrow_event->borrowers['name']}}</td>
-            <td>{{substr($borrow_event->created_at,0,10)}}</td>
-            <td><div class="label label-danger">{{$borrow_event->status()}}</div></td>
+            <td>{{ $item->barcode }}</td>
+            <td>{{ $item->location }}</td>
+            <td>
+            @if ($item->state === 0)
+            <div class="label label-default">{{$item->status()}}</div>
+            @else
+            <div class="label label-success">{{$item->status()}}</div>
+            @endif
+            </td>
           </tr>
-        @endforeach -->
+        @endforeach
 
       </tbody>
       </table>
@@ -71,7 +78,7 @@ function editBookInfo(){
     document.getElementById('editButton').click();
 }
 
-function deleteModal(id,item){
+function deleteModal(id){
   $.get('{{url("/")}}/book/delete/'+id,function(dataHTML){
     $('#modalTitle').html("<h4>Delete the Book</h4>");
     $('#modalBody').html(dataHTML);

@@ -18,7 +18,7 @@ class CreateBookItemsTable extends Migration
             $table->string('barcode', 255)->unique();
             $table->unsignedInteger('book_id');
             $table->text('location');
-            $table->integer('State');
+            $table->integer('state');
             $table->timestamps();
 
             $table->foreign('book_id')->references('id')->on('books');

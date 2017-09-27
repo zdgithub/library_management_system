@@ -21,7 +21,7 @@ class CreateBooksTable extends Migration
             $table->string('publisher');
             $table->integer('total_num')->unsigned();
             $table->integer('borrowed_num')->unsigned()->default(0);
-            $table->integer('price');
+            $table->float('price');
             $table->timestamps();
         });
     }

@@ -1,56 +1,115 @@
 @extends('layouts.app')
 
-@section('title','Settings')
+@section('title','profile')
 
 @section('content')
+<br>
 <div class="container">
   <div class="row">
     <div class="col-sm-3 settings-left">
-      <h5 class="settings-left-element"><a href="#general_settings">General Settings</a></h5>
-      <h5 class="settings-left-element"><a href="#system_settings">System Settings</a></h5>
+      <h5 class="settings-left-element"><a href="#Personal">Personal Settings</a></h5>
+      <h5 class="settings-left-element"><a href="#Borrow">Borrow Information</a></h5>
+      <h5 class="settings-left-element"><a href="#history">Borrow History</a></h5>
     </div>
-    <div class="col-sm-8" id="general_settings">
+    <div class="col-sm-8" id="Personal">
       <div class="panel">
         <div class="panel-heading">
-          <h3>General Settings</h3>
+          <h3>Personal Settings</h3>
         </div>
-        <form class="form" action="{{route('settings.update')}}" method="POST">
+        <form class="form" method="POST" action="{{route('profile.edit')}}">
           <div class="panel-body">
-            <label>Library name:</label><br>
-            <input class="form-control" name="name" value="{{$site->name}}" placeholder="Enter Library's name"><br>
-            <label>Address:</label><br>
-            <input class="form-control" name="address" value="{{$site->address}}" placeholder="Enter Library's address"><br>
-            <label>Issue Interval:</label><br>
-            <input class="form-control" name="issue_interval" value="{{$site->issue_interval}}" placeholder="Enter Issue Interval"><br>
-            <label>Fine Amount:</label><br>
-            <input class="form-control" name="fine_amount" value="{{$site->fine_amount}}" placeholder="Enter Fine Amount"><br>
-            <label>Admin's Email:</label><br>
-            <input class="form-control" name="admin_email" value="{{$site->admin_email}}" placeholder="Enter Admin's email"><br>
+            <label>True Name:</label><br>
+            @if ($user_info === null)
+            <input class="form-control" name="truename" value="" ><br>
+            <label>Sex:</label><br>
+            <input class="form-control" name="sex" value=""><br>
+            <label>University:</label><br>
+            <input class="form-control" name="school" value=""><br>
+            <label>Student Number:</label><br>
+            <input class="form-control" name="scode" value=""><br>
+            <label>Major:</label><br>
+            <input class="form-control" name="major" value=""><br>
+            <label>Phone:</label><br>
+            <input class="form-control" name="phone" value=""><br>
+            @else
+            <input class="form-control" name="truename" value="{{ $user_info->truename }}" ><br>
+            <label>Sex:</label><br>
+            <input class="form-control" name="sex" value="{{$user_info->sex}}"><br>
+            <label>University:</label><br>
+            <input class="form-control" name="school" value="{{$user_info->school}}"><br>
+            <label>Student Number:</label><br>
+            <input class="form-control" name="scode" value="{{$user_info->scode}}"><br>
+            <label>Major:</label><br>
+            <input class="form-control" name="major" value="{{$user_info->major}}"><br>
+            <label>Phone:</label><br>
+            <input class="form-control" name="phone" value="{{$user_info->phone}}"><br>
+            @endif
+            <input type='hidden' name='id' value="{{$rid}}">
           </div>
           <div class="panel-footer">
             <input type="hidden" name="_token" value="{{\Session::token()}}">
-            <button class="form-control btn btn-primary"><span class="fa fa-upload"></span> Update</button>
+            <button type="submit" class="form-control btn btn-primary">Save</button>
           </div>
         </form>
       </div>
 
-      <div class="panel" id="system_settings">
+      <div class="panel" id="Borrow">
           <div class="panel-heading">
-              <h3>System Settings</h3>
+              <h3>Borrow Information</h3>
           </div>
           <div class="panel-body">
-            <form class="form" action="{{url('/reset_all')}}" method="post">
-            <h4> Reset Everything?</h3>
-            Would you like to reset everything and clear all the data about books and borrowers?<br>
-            <br>
-            (For Confirmation) <label>Enter admin password: </label>
-            <input type="hidden" name="_token" value="{{\Session::token()}}">
-            <input class="form-control" type="password" name="password" placeholder="Enter Password ">
-            <br><button class="btn btn-danger pull-right">Reset All</button>
-          </form>
+            <table class="table table-striped table-bordered" id='ptable'>
+              <thead>
+                <tr>
+                  <th>Barcode</th>
+                  <th>Name</th>
+                  <th>Location</th>
+                  <th>Loan Date</th>
+                  <th>Receive Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
+
+      <div class="panel" id="history">
+          <div class="panel-heading">
+              <h3>Borrow History</h3>
+          </div>
+          <div class="panel-body">
+            <table class="table table-striped table-bordered" id='btable'>
+              <thead>
+                <tr>
+                  <th>Barcode</th>
+                  <th>Name</th>
+                  <th>Location</th>
+                  <th>Loan Date</th>
+                  <th>Return Date</th>
+                  <th>Fine</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <div class="panel-footer">
-            <div class="alert alert-warning"><label>Note: </label> Those deleted data cannot be regained by system maintainance team. Be sure before resetting everything.</div>
           </div>
       </div>
     </div>
@@ -71,4 +130,8 @@
   background-color: #eee;
 }
 </style>
+
+<script>
+  $('#ptable').dataTable();
+</script>
 @endsection

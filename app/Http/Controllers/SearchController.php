@@ -12,15 +12,17 @@ class SearchController extends Controller
         $output = "";
 
 
-        $books = \App\Books::where('name',$request->name)->get();
+        $books = \App\Book::where('name',$request->name)->get();
 
         if($books){
             foreach($books as $key => $book){
 
             $output = '<tr>'.
-                        '<td>'.$book->id.'</td>'.
                         '<td><a href="'.url('/').'/book/'.$book->id.'">'.$book->name.'</a></td>'.
                         '<td>'.$book->author.'</td>'.
+                        '<td>'.$book->publisher.'</td>'.
+                        '<td>'.$book->copies_available().'</td>'.
+                        '<td>'.$book->total_num.'</td>'.
                     '</tr>';
         }
         return $output;
