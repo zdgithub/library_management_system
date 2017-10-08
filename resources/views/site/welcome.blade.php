@@ -121,7 +121,7 @@
       <script src="js/app.js"></script>-->
       <script>
         $('.search_table').hide();
-        $('#search').on('keyup',function(data){
+        $('#search').on('keyup',function(event){
             $value = $(this).val();
             if($value == ''){
                 $('.search_table').hide();
