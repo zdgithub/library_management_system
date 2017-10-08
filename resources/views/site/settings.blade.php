@@ -8,7 +8,7 @@
   <div class="row">
     <div class="col-sm-3 settings-left">
       <h5 class="settings-left-element"><a href="#Personal">Personal Settings</a></h5>
-      <h5 class="settings-left-element"><a href="#Borrow">Borrow Information</a></h5>
+      <h5 class="settings-left-element"><a href="#Borrow">Current Borrow</a></h5>
       <h5 class="settings-left-element"><a href="#history">Borrow History</a></h5>
     </div>
     <div class="col-sm-8" id="Personal">

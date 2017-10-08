@@ -51,3 +51,4 @@ The server will be live on localhost:8000
 ## Developing Environment
 - php>=5.6.4
 - Apache2.4
+- laravel5.3.19

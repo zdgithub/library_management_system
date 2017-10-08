@@ -18,6 +18,9 @@ Route::get('/NotFound', function () {
     return view('errors.503');
 });
 
+//welcome页根据书名查找书籍
+Route::get('/search/books/byName','SearchController@searchBooks');
+
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function () {
@@ -37,8 +40,7 @@ Route::group(['middleware' => 'auth'], function () {
 // 删除book(这一类)
     Route::get('book/delete/{id}', 'BookController@deleteBookView');
     Route::post('book/delete', 'BookController@deleteBook')->name('book.delete');
-//welcome页根据书名查找书籍
-    Route::get('/search/books/byName','SearchController@searchBooks');
+
 
 //获得用户个人信息的页面
     Route::get('profile/{id}', 'SiteController@profileView');
