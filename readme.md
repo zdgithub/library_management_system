@@ -48,6 +48,6 @@ Now Run the server
 
 The server will be live on localhost:8000
 
-## Development
+## Developing Environment
 - php>=5.6.4
 - Apache2.4
