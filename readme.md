@@ -48,22 +48,6 @@ Now Run the server
 
 The server will be live on localhost:8000
 
-and you can see the login email from your database and password is 'secret'. 
-
-# How to contribute
-
-* Fork The Repo
-* Create a branch
-* Send a Pull Request
-
-
-
-# LICENSE
-This library management system is under MIT License. [Click here](https://github.com/swornimshrestha/library_management_system/blob/master/LICENSE) To See the LICENSE 
-
-# Technologies Used
-* [Laravel](https://laravel.com)
-* [jQuery](https://jquery.com)
-* [Bootstrap](getbootstrap.com)
-
-If you are a engineering student looking for LIMS project to submit. You can use this. I understand you.
+## Development
+- php>=5.6.4
+- Apache2.4
