@@ -19,7 +19,9 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            return redirect('/home');
+            //根据不同guard跳转到不同的页面
+            $url = $guard ? 'reader/dash':'/home';
+            return redirect($url);
         }
 
         return $next($request);

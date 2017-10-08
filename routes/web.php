@@ -64,3 +64,14 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 
+Route::group(['prefix' => 'reader'],function ($router)
+{
+    $router->get('login', 'Reader\LoginController@showLoginForm');
+    $router->post('login', 'Reader\LoginController@login')->name('reader.login');
+    $router->post('logout', 'Reader\LoginController@logout');
+
+    $router->get('dash', 'Reader\DashboardController@index');
+});
+
+
+
