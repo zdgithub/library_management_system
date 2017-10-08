@@ -7,7 +7,7 @@ This is the simplest Library Management System. Easy To Use and maintain.
 First clone the repo
 
 ```zsh
-	$ git clone https://github.com/swornimshrestha/library_management_system
+	$ git clone https://github.com/zdgithub/library_management_system
 	
 ```
 
