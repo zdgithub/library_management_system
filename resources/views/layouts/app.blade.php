@@ -86,7 +86,6 @@ function closeModal(){
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href='{{url("/")}}/profile/{{ Auth::user()->id }}'><span class="fa fa-user"></span> Profile</a>
                                         <a href="{{ url('/logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

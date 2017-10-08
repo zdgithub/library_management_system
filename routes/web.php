@@ -66,13 +66,13 @@ Route::group(['middleware' => 'auth'], function () {
 
 Route::group(['prefix' => 'reader'], function (){
     Route::group(['middleware' => 'auth.reader'], function () {
-        Route::get('dash', 'Reader\DashboardController@index');
+        Route::get('dash', 'Reader\ReaderController@index');
     });
 
     Route::get('login', 'Reader\LoginController@showLoginForm');
     Route::post('login', 'Reader\LoginController@login')->name('reader.login');
     Route::post('logout', 'Reader\LoginController@logout');
-    
+
     Route::get('register', 'Reader\RegisterController@showRegistrationForm');
     Route::post('register', 'Reader\RegisterController@register');
 
