@@ -78,7 +78,7 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @if (Auth::check())
-                        <a href="{{ url('/home') }}">Home</a>
+                        <a href="{{ url('/reader/dash') }}">Home</a>
                     @else
                         <a href="{{ url('/reader/login') }}">Login</a>
                         <a href="{{ url('/reader/register') }}">Register</a>

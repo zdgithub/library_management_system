@@ -23,7 +23,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest:reader', ['except' => 'logout']);
+        $this->middleware('guest.reader', ['except' => 'logout']);
     }
 
     //重写登录视图页面
@@ -32,7 +32,7 @@ class LoginController extends Controller
       return view('reader.login');
     }
 
-    //自定义认证驱动
+    //自定义认证驱动,使用reader guard
     protected function guard()
     {
       return auth()->guard('reader');

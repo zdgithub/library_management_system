@@ -64,14 +64,18 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 
-Route::group(['prefix' => 'reader'],function ($router)
-{
-    $router->get('login', 'Reader\LoginController@showLoginForm');
-    $router->post('login', 'Reader\LoginController@login')->name('reader.login');
-    $router->post('logout', 'Reader\LoginController@logout');
+Route::group(['prefix' => 'reader'], function (){
+    Route::group(['middleware' => 'auth.reader'], function () {
+        Route::get('dash', 'Reader\DashboardController@index');
+    });
 
-    $router->get('dash', 'Reader\DashboardController@index');
+    Route::get('login', 'Reader\LoginController@showLoginForm');
+    Route::post('login', 'Reader\LoginController@login')->name('reader.login');
+    Route::post('logout', 'Reader\LoginController@logout');
+    
+    Route::get('register', 'Reader\RegisterController@showRegistrationForm');
+    Route::post('register', 'Reader\RegisterController@register');
+
 });
-
 
 
