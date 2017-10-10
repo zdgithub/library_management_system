@@ -30,8 +30,8 @@
                     <label>Price:</label>
                     <input class="form-control" name="book_price" placeholder="Enter Book's Price" /><br>
 
-                    <label>Number Of Copies:</label>
-                    <input class="form-control" name="total_num" placeholder="Enter Number Of Copies" /><br>
+                    <!--<label>Number Of Copies:</label>
+                    <input class="form-control" name="total_num" placeholder="Enter Number Of Copies" /><br>-->
 
                     <input type="hidden" name="_token" value="{{\Session::token()}}" />
                     <button type="submit" class="form-control btn btn-success"><span class="fa fa-plus"></span> Add</button>

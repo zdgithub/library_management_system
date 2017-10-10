@@ -53,15 +53,21 @@
             <td>{{ $item->barcode }}</td>
             <td>{{ $item->location }}</td>
             <td>
-            @if ($item->state === 0)
-            <div class="label label-default">{{$item->status()}}</div>
-            @else
-            <div class="label label-success">{{$item->status()}}</div>
-            @endif
+                @if ($item->state === 0)
+                <div class="label label-default">{{$item->status()}}</div>
+                @else
+                <div class="label label-success">{{$item->status()}}</div>
+                @endif
             </td>
             <td>
-            <button type='button' class="btn btn-danger" onclick ="deleteCopyModal({{$item->id}})"> Delete
-            </button></td>
+                @if ($item->state === 1)
+                <button type='button' class="btn btn-danger" onclick ="deleteCopyModal({{$item->id}})"> Delete
+                </button>
+                @else
+                <button type='button' class="btn btn-default" disabled="disabled" onclick ="deleteCopyModal({{$item->id}})"> Delete
+                </button>
+                @endif
+            </td>
           </tr>
         @endforeach
       </tbody>

@@ -9,17 +9,17 @@
               <br/><br/>
               <div class="col-sm-12">
 
-                <a href="{{url('')}}">
+                <a href="{{url('/reader/list')}}">
                 <div class="col-sm-6">
                   <div class="panel link-panel">
                     <div class="panel-heading">
-                      <h3><span class="fa fa-book"></span>Books List</h3>
+                      <h3><span class="fa fa-book"></span> Books List</h3>
                     </div>
                   </div>
                 </div>
                 </a>
 
-                <a href="{{url('')}}">
+                <a href="{{url('/reader/borrowinfo')}}">
                 <div class="col-sm-6">
                   <div class="panel link-panel">
                     <div class="panel-heading">

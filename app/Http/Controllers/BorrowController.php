@@ -14,8 +14,17 @@ class BorrowController extends Controller
     public function index()
     {
         $borrows = Borrow::all();
+        $btmp = array();
+        foreach ($borrows as $item)
+        {
+            $bitem = BookItem::where('id', $item->book_item_id)->first();
+            if ($bitem->state == 0)
+            {
+                array_push($btmp, $item);
+            }
+        }
         return \View::make('borrows.index')
-        ->with('borrows', $borrows);
+        ->with('borrows', $btmp);
     }
 //得到借书的弹框
     public function lendView()
@@ -34,20 +43,49 @@ class BorrowController extends Controller
                                 ->first();
         $bookItem = BookItem::where('barcode', $request->barcode)
                                 ->first();
+        $bookItem->state = 0; //被借出
+        $bookItem->save();
 
         $borrow = new Borrow();
-        $borrow->user_id = $profile->user_id;
+        $borrow->reader_id = $profile->reader_id;
         $borrow->book_item_id = $bookItem->id;
         $borrow->borrow_date = Carbon::today();
         $borrow->save();
 
-        return \Redirect::to('borrows');
+        return \Redirect::to(url('borrows'));
     }
 
-    public function clear($id)
+    public function returnBook($id)
     {
-        Borrow::where('id',$id)->update(array('cleared' => 1));
+        $borrow = Borrow::where('id', $id)->first();
+        BookItem::where('id', $borrow->bookItem->id)->update(array('state' => 1));
+
+        $borrow->return_date = Carbon::today();
+        $borrow->save();
     }
-    
+
+    public function readerInfo()
+    {
+        //获得当前登录的用户id
+        $uid = auth()->guard('reader')->user()->id;
+        $borrows = Borrow::where('reader_id', $uid)->get();
+        $current = array();
+        $history = array();
+        foreach ($borrows as $item) {
+            $tmp = BookItem::where('id', $item->book_item_id)->first();
+            //dd($item);
+            if ($tmp->state == 0)
+            {
+                array_push($current, $item);
+            }else if($tmp->state == 1)
+            {
+                array_push($history, $item);
+            }
+        }
+
+       return \View::make('reader.info')->with('current', $current)
+                                        ->with('history', $history);
+    }
+
 
 }

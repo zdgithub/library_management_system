@@ -12,8 +12,8 @@ class BooksTableSeeder extends Seeder
     public function run()
     {
         DB::table('books')->insert([
-          ['isbn' => '978-7-115-39409-5', 'name' => 'The Little Prince', 'author' => 'Helen','publisher' => 'Beijing Industry Press', 'price' => '32.41', 'total_num' => 10],
-          ['isbn' => '960-1-123-12223-4', 'name' => 'Oliver Twist', 'author' => 'Mike', 'publisher' => 'Telecom Press', 'price' => '15.64', 'total_num' => 6]
+          ['isbn' => '123-456-789-1111', 'name' => 'The Little Prince', 'author' => 'Helen','publisher' => 'Beijing Industry Press', 'price' => '32.41', 'total_num' => 0],
+          ['isbn' => '123-456-789-1112', 'name' => 'Oliver Twist', 'author' => 'Mike', 'publisher' => 'Telecom Press', 'price' => '15.64', 'total_num' => 0]
         ]);
     }
 }

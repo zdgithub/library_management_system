@@ -23,7 +23,7 @@ class Profile extends Model
   //获取拥有该个人信息的用户
   public function user()
   {
-    return $this->belongsTo('App\User');
+    return $this->belongsTo('App\Models\Reader', 'reader_id');
   }
 
 }

@@ -22,18 +22,24 @@
                   <th>Barcode</th>
                   <th>Name</th>
                   <th>Location</th>
-                  <th>Loan Date</th>
+                  <th>Borrow Date</th>
                   <th>Receive Date</th>
+                  <th>Status</th>
+                  <th>Fine</th>
                 </tr>
               </thead>
               <tbody>
+                @foreach ($current as $cur)
                 <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <td>{{ $cur->bookItem->barcode }}</td>
+                  <td>{{ $cur->bookItem->book->name }}</td>
+                  <td>{{ $cur->bookItem->location }}</td>
+                  <td>{{ $cur->borrow_date }}</td>
+                  <td>{{ $cur->receiveDate() }}</td>
+                  <td>{{ $cur->status() }}</td>
+                  <td>{{ $cur->fine() }}</td>
                 </tr>
+                @endforeach
               </tbody>
             </table>
           </div>
@@ -50,20 +56,20 @@
                   <th>Barcode</th>
                   <th>Name</th>
                   <th>Location</th>
-                  <th>Loan Date</th>
+                  <th>Borrow Date</th>
                   <th>Return Date</th>
-                  <th>Fine</th>
                 </tr>
               </thead>
               <tbody>
+                @foreach ($history as $his)
                 <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <td>{{ $his->bookItem->barcode }}</td>
+                  <td>{{ $his->bookItem->book->name }}</td>
+                  <td>{{ $his->bookItem->location }}</td>
+                  <td>{{ $his->borrow_date }}</td>
+                  <td>{{ $his->return_date }}</td>
                 </tr>
+                @endforeach
               </tbody>
             </table>
           </div>
@@ -90,6 +96,6 @@
 </style>
 
 <script>
-  $('#ptable').dataTable();
+  //$('#ptable').dataTable();
 </script>
 @endsection

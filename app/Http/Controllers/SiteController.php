@@ -19,9 +19,9 @@ class SiteController extends Controller
 
     public function profileView($id)
     {
-        $user_info = \App\Profile::where('user_id', $id)->first();
+        $user_info = \App\Profile::where('reader_id', $id)->first();
 
-        return \View::make('site.settings')
+        return \View::make('reader.profile')
                     ->with('rid', $id)
                     ->with('user_info', $user_info);
     }
@@ -32,10 +32,10 @@ class SiteController extends Controller
             'scode' => 'required',
         ));
 
-        $profile = Profile::where('user_id',$request->id)->first();
+        $profile = Profile::where('reader_id',$request->id)->first();
         if($profile == null){
             $profile = new Profile();
-            $profile->user_id = $request->id;
+            $profile->reader_id = $request->id;
             $profile->truename = $request->truename;
             $profile->sex = $request->sex;
             $profile->school = $request->school;
@@ -44,7 +44,7 @@ class SiteController extends Controller
             $profile->phone = $request->phone;
             $profile->save();
         }else {
-            Profile::where('user_id',$request->id)->update(array(
+            Profile::where('reader_id',$request->id)->update(array(
             'truename' => $request->truename,
             'sex' => $request->sex,
             'school' => $request->school,
@@ -55,7 +55,7 @@ class SiteController extends Controller
         }
 
 
-        return \Redirect::to(url('profile/'.$request->id));
+        return \Redirect::to(url('reader/profile/'.$request->id));
     }
 
 }

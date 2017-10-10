@@ -61,7 +61,7 @@ function closeModal(){
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <a class="navbar-brand" href="{{ url('/ad') }}">
                       Library Management System
                     </a>
                 </div>

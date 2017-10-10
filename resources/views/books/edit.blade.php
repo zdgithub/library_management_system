@@ -15,7 +15,7 @@
   <input type="textbox"  class="form-control" name="publisher" value="{{$book_info->publisher}}">
   <br>
   <label> Total Copies: </label>
-  <input type="textbox"  class="form-control" name="total_num" value="{{$book_info->total_num}}">
+  <input type="textbox"  class="form-control" readonly name="total_num" value="{{$book_info->total_num}}">
   <br><label> Available Copies: </label>
   <input type="textbox"  class="form-control" readonly value="{{$book_info->copies_available()}}">
   <input type='hidden' name='id' value="{{$book_info->id}}">

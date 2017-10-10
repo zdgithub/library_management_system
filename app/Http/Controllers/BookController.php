@@ -14,6 +14,13 @@ class BookController extends Controller
 
         return \View::make('books.index')->with('books', $books);
     }
+    public function readerList()
+    {
+        $books = Book::all();
+
+        return \View::make('reader.booklist')->with('books', $books);
+    }
+
 //添加书籍get
     public function addbookview()
     {
@@ -27,7 +34,6 @@ class BookController extends Controller
             'book_name' => 'required',
             'author_name' => 'required',
             'book_price' => 'required',
-            'total_num' => 'required|integer',
         ));
 
         $book = new Book();
@@ -36,7 +42,7 @@ class BookController extends Controller
         $book->author = $request->author_name;
         $book->price = $request->book_price;
         $book->publisher = $request->publisher;
-        $book->total_num = $request->total_num;
+        $book->total_num = 0;
         $book->save();
 //返回图书列表页面
         return \Redirect::to(route('books'));
@@ -61,6 +67,11 @@ class BookController extends Controller
         $copy->state = 1;
         $copy->save();
 
+        $book = Book::where('id', $request->book_id)->first();
+        $tt = $book->total_num;
+        $book->total_num = ++$tt;
+        $book->save();
+
         return \Redirect::to(url('/book/'.$request->book_id));
     }
 
@@ -74,6 +85,12 @@ class BookController extends Controller
         $item = BookItem::where('id', $request->id)->first();
 
         BookItem::where('id', $request->id)->delete();
+
+        $book = Book::where('id', $item->book->id)->first();
+        $tt = $book->total_num;
+        $book->total_num = --$tt;
+        $book->save();
+
         return \Redirect::to(url('/book/'.$item->book->id));
     }
 
@@ -92,7 +109,6 @@ class BookController extends Controller
             'name' => 'required',
             'author' => 'required',
             'price' => 'required',
-            'total_num' => 'required|integer',
             'id' => 'required',
         ));
 
@@ -102,7 +118,6 @@ class BookController extends Controller
             'author' => $request->author,
             'price' => $request->price,
             'publisher' => $request->publisher,
-            'total_num' => $request->total_num,
         ));
 
         return \Redirect::to(url('/book/'.$request->id));
@@ -124,15 +139,47 @@ class BookController extends Controller
 
        }
     }
+
+    public function readerView($id)
+    {
+        $book = Book::where('id', $id)->first();
+        if($book){
+
+        $bookItems = \App\BookItem::where('book_id', $book->id)->get();
+
+        return \View::make('reader.view')
+                      ->with('book', $book)
+                      ->with('bookItems', $bookItems);
+       }else{
+         return \Redirect::to(url('/NotFound'));
+
+       }
+    }
 //删除书籍post
     public function deleteBook(Request $request)
     {
-        Book::where('id', $request->id)->delete();
-        return \Redirect::to(route('books'));
+        $bookItems = BookItem::where('book_id', $request->id)->get();
+        $can = true;
+        //该书copy已被借出去,则该书不可以删除
+        foreach ($bookItems as $item) {
+            if ($item->state === 0) {
+                $can = false;
+                break;
+            }
+        }
+
+        if (!$can){
+            return \Redirect::to(url('/book/'.$request->id));
+        }else{
+            BookItem::where('book_id', $request->id)->delete();
+            Book::where('id', $request->id)->delete();
+            return \Redirect::to(route('books'));
+        }
     }
 // 删除书籍get
     public function deleteBookView($id)
     {
         return \View::make('books.delete')->with('id', $id);
     }
+
 }

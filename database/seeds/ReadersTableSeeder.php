@@ -11,9 +11,9 @@ class ReadersTableSeeder extends Seeder
      */
     public function run()
     {
-      factory('App\Models\Reader',3)->create([
-            'password' => bcrypt('123456')
-            ]);
+      // factory('App\Models\Reader',3)->create([
+      //       'password' => bcrypt('123456')
+      //       ]);
 
     }
 }

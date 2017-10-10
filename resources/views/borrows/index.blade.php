@@ -8,7 +8,7 @@
     <div class="panel">
         <div class="panel-heading">
             <button onclick="lend()" class="btn btn-primary pull-right">lend a book</button>
-            <h3>Total Borrows</h3>
+            <h3>Current Borrows</h3>
         </div>
         <div class="panel-body">
             <table class="table responsive-table table-striped" id='borrowtable'>
@@ -63,7 +63,7 @@
                             {{$borrow->fine()}}
                         </td>
                         <td>
-                         <button class="btn btn-default">RETURN</button>
+                         <button onclick="returnBook({{$borrow->id}})" class="btn btn-default">RETURN</button>
                         </td>
                     </tr>
                     @endforeach
@@ -82,6 +82,18 @@
             $('#def-modal-content').html(data);
         });
         $('#def-modal').modal('show');
+    }
+
+    function returnBook(id){
+        $.ajax({
+                url: "{{url('/')}}/return/"+id,
+                method: "POST",
+                data: {_token:"{{Session::token()}}"},
+        }).fail((data) => {
+            console.log(data);
+        }).done((data) => {
+            location.reload();
+        });
     }
 
 

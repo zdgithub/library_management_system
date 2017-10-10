@@ -1,6 +1,6 @@
 @extends('layouts.reader')
 
-@section('title','Information')
+@section('title','profile')
 
 @section('content')
 <br>
@@ -10,7 +10,7 @@
       <h5 class="settings-left-element"><a href="#Personal">Personal Settings</a></h5>
     </div>
     <div class="col-sm-8" >
-      
+
       <div class="panel">
         <div class="panel-heading">
           <h3>Personal Settings</h3>

@@ -14,6 +14,10 @@ Route::get('/', function () {
     return view('site.welcome');
 });
 
+Route::get('/ad', function () {
+    return view('site.adwelcome');
+});
+
 Route::get('/NotFound', function () {
     return view('errors.503');
 });
@@ -41,16 +45,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('book/delete/{id}', 'BookController@deleteBookView');
     Route::post('book/delete', 'BookController@deleteBook')->name('book.delete');
 
-
-//获得用户个人信息的页面
-    Route::get('profile/{id}', 'SiteController@profileView');
-    Route::post('profile', 'SiteController@profile')->name('profile.edit');
-
 // 借阅书籍的读者列表
     Route::get('borrows', 'BorrowController@index');
 // 借出一本书
     Route::get('lend', 'BorrowController@lendView');
     Route::post('lend', 'BorrowController@lend');
+//还一本书
+    Route::post('return/{id}', 'BorrowController@returnBook');
 // 添加一本copy
     Route::get('addcopy/{id}','BookController@addCopyView');
     Route::post('addcopy','BookController@addCopy');
@@ -59,18 +60,26 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('deletecopy', 'BookController@deleteCopy')->name('copy.delete');
 
 
-    Route::get('borrowers', 'BorrowersController@index')->name('borrowers');
-    Route::post('borrowers', 'BorrowersController@add')->name('borrowers.add');
-
 });
 
 Route::group(['prefix' => 'reader'], function (){
     Route::group(['middleware' => 'auth.reader'], function () {
+
+        //获得用户个人信息的页面
+        Route::get('profile/{id}', 'SiteController@profileView');
+        Route::post('profile', 'SiteController@profile')->name('profile.edit');
+
+        //返回book的信息
+        Route::get('book/{id}', 'BookController@readerView');
+        //导航栏
         Route::get('dash', 'Reader\ReaderController@index');
+        Route::get('list', 'BookController@readerList');
+        Route::get('borrowinfo', 'BorrowController@readerInfo');
+
     });
 
     Route::get('login', 'Reader\LoginController@showLoginForm');
-    Route::post('login', 'Reader\LoginController@login')->name('reader.login');
+    Route::post('login', 'Reader\LoginController@login');
     Route::post('logout', 'Reader\LoginController@logout');
 
     Route::get('register', 'Reader\RegisterController@showRegistrationForm');

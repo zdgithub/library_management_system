@@ -10,14 +10,14 @@ class Borrow extends Model
     protected $dates = ['created_at', 'updated_at', 'borrow_date'];
     public function user()
     {
-        return $this->belongsTo('App\User', 'user_id');
+        return $this->belongsTo('App\Models\Reader', 'reader_id');
     }
 
     public function bookItem()
     {
         return $this->belongsTo('App\BookItem', 'book_item_id');
     }
-//应还日期
+//应还日期,注意这个为函数
     public function receiveDate()
     {
         return $this->borrow_date->addDays(30);
@@ -42,7 +42,7 @@ class Borrow extends Model
     public function fine()
     {
         if ($this->status() != 'Charging Fine') {
-            return '￥：0.0';
+            return '0.0';
         }
 
         $today = Carbon::today();
@@ -51,6 +51,6 @@ class Borrow extends Model
 
         $total_fine = 0.1 * $days_gone;
 
-        return '￥：'.$total_fine;
+        return $total_fine;
     }
 }
