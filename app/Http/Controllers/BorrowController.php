@@ -18,7 +18,7 @@ class BorrowController extends Controller
         foreach ($borrows as $item)
         {
             $bitem = BookItem::where('id', $item->book_item_id)->first();
-            if ($bitem->state == 0)
+            if ($bitem->state == 0 && $item->return_date == null)
             {
                 array_push($btmp, $item);
             }
@@ -43,16 +43,20 @@ class BorrowController extends Controller
                                 ->first();
         $bookItem = BookItem::where('barcode', $request->barcode)
                                 ->first();
-        $bookItem->state = 0; //被借出
-        $bookItem->save();
+        if($bookItem->state == 0){
+            return \Redirect::to(url('borrows'));
+        }else if($bookItem->state == 1){
+            $bookItem->state = 0; //被借出
+            $bookItem->save();
 
-        $borrow = new Borrow();
-        $borrow->reader_id = $profile->reader_id;
-        $borrow->book_item_id = $bookItem->id;
-        $borrow->borrow_date = Carbon::today();
-        $borrow->save();
+            $borrow = new Borrow();
+            $borrow->reader_id = $profile->reader_id;
+            $borrow->book_item_id = $bookItem->id;
+            $borrow->borrow_date = Carbon::today();
+            $borrow->save();
+            return \Redirect::to(url('borrows'));
+        }
 
-        return \Redirect::to(url('borrows'));
     }
 
     public function returnBook($id)
@@ -74,10 +78,10 @@ class BorrowController extends Controller
         foreach ($borrows as $item) {
             $tmp = BookItem::where('id', $item->book_item_id)->first();
             //dd($item);
-            if ($tmp->state == 0)
+            if ($item->return_date == null)
             {
                 array_push($current, $item);
-            }else if($tmp->state == 1)
+            }else
             {
                 array_push($history, $item);
             }
