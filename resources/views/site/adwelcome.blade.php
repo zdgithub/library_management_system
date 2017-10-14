@@ -90,6 +90,7 @@
                 <div class="title m-b-md">
                      Welcome to our library!
                 </div>
+                <!--
                 <div class='row'>
                 <div class="col-md-12">
                     <div class="panel">
@@ -114,11 +115,12 @@
                     </table>
                 </div>
                 <div class='notfd'></div>
-              </div>
+              </div>-->
             </div>
         </div>
       <!--载入打包后的js
       <script src="js/app.js"></script>-->
+      <!--
       <script>
         $('.search_table').hide();
         $('#search').on('keyup',function(event){
@@ -146,6 +148,6 @@
               $('.notfd').hide();
             }
         });
-      </script>
+      </script>-->
     </body>
 </html>

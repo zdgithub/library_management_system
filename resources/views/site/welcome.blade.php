@@ -91,12 +91,21 @@
                      Welcome to our library!
                 </div>
                 <div class='row'>
-                <div class="col-md-12">
+                <div class='col-md-12'>
+                <div class='col-md-3'>
+                  <select id='condition' class='form-control' style='margin-top:10px'>
+                    <option value='bookname'>Book's Name</option>
+                    <option value='author'>Author</option>
+                  </select>
+                </div>
+                <div class="col-md-9">
                     <div class="panel">
                         <div class="panel-heading" style="height:50px;">
-                            <input class="col-sm-7 form-control" type="textbox" placeholder="Search book's name.." style='border:2px    #778899 solid' id="search"/>
+                            <input class="col-sm-7 form-control" type="textbox" placeholder="Search . . ." style='border:2px    #778899 solid' id="search"/>
                         </div>
                     </div>
+                </div>
+                </div>
                 </div>
                 <div class="search_table">
                     <table class="table table-bordered table-hover" id='searchTable'>
@@ -114,7 +123,6 @@
                     </table>
                 </div>
                 <div class='notfd'></div>
-              </div>
             </div>
         </div>
       <!--载入打包后的js
@@ -126,11 +134,29 @@
             if($value == ''){
                 $('.search_table').hide();
             }
+            $sel = $('#condition').val();
             if(event.keyCode == 13){
-              $.ajax({
+              if($sel == 'bookname'){
+                   $.ajax({
+                    type:'get',
+                    url : '{{url("/")}}/search/books/byName',
+                    data: {'name':$value},
+                    success: function(data){
+                      if(data == ''){
+                        $('.search_table').hide();
+                        $('.notfd').show();
+                        $('.notfd').html('<p style="font-size: 25px">Nothing Found</p>');
+                      }else{
+                        $('.search_table').show();
+                        $('#searchTable tbody').html(data);
+                      }
+                    }
+                  });
+              }else if($sel == 'author'){
+                $.ajax({
                 type:'get',
-                url : '{{url("/")}}/search/books/byName',
-                data: {'name':$value},
+                url : '{{url("/")}}/search/books/byAuthor',
+                data: {'author':$value},
                 success: function(data){
                   if(data == ''){
                     $('.search_table').hide();
@@ -141,7 +167,9 @@
                     $('#searchTable tbody').html(data);
                   }
                 }
-              });
+                });
+              }
+
             }else{
               $('.notfd').hide();
             }

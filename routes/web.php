@@ -24,6 +24,7 @@ Route::get('/NotFound', function () {
 
 //welcome页根据书名查找书籍
 Route::get('/search/books/byName','SearchController@searchBooks');
+Route::get('/search/books/byAuthor','SearchController@searchBooksByAuthor');
 
 Auth::routes();
 
@@ -58,7 +59,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('deletecopy/{id}', 'BookController@deleteCopyView');
     Route::post('deletecopy', 'BookController@deleteCopy')->name('copy.delete');
-
 
 });
 

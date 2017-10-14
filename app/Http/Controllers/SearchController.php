@@ -18,7 +18,7 @@ class SearchController extends Controller
             foreach($books as $key => $book){
 
             $output = '<tr>'.
-                        '<td><a href="'.url('/').'/book/'.$book->id.'">'.$book->name.'</a></td>'.
+                        '<td><a href="'.url('/').'/reader/book/'.$book->id.'">'.$book->name.'</a></td>'.
                         '<td>'.$book->author.'</td>'.
                         '<td>'.$book->publisher.'</td>'.
                         '<td>'.$book->copies_available().'</td>'.
@@ -26,8 +26,31 @@ class SearchController extends Controller
                     '</tr>';
         }
         return $output;
-    }else{
+      }else{
         return 'Nothing found';
+      }
     }
+
+    public function searchBooksByAuthor(Request $request){
+        $output = "";
+
+
+        $books = \App\Book::where('author',$request->author)->get();
+
+        if($books){
+            foreach($books as $key => $book){
+
+            $output = '<tr>'.
+                        '<td><a href="'.url('/').'/reader/book/'.$book->id.'">'.$book->name.'</a></td>'.
+                        '<td>'.$book->author.'</td>'.
+                        '<td>'.$book->publisher.'</td>'.
+                        '<td>'.$book->copies_available().'</td>'.
+                        '<td>'.$book->total_num.'</td>'.
+                    '</tr>';
+        }
+        return $output;
+      }else{
+        return 'Nothing found';
+      }
     }
 }
