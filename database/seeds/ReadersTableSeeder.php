@@ -11,9 +11,10 @@ class ReadersTableSeeder extends Seeder
      */
     public function run()
     {
-      // factory('App\Models\Reader',3)->create([
-      //       'password' => bcrypt('123456')
-      //       ]);
+      DB::table('readers')->insert([
+        ['name' => 'Xiao Wang', 'email' => 'reader1@qq.com', 'password' => bcrypt('123456')],
+        ['name' => 'Da Li', 'email' => 'reader2@qq.com', 'password' => bcrypt('123456')],
+      ]);
 
     }
 }

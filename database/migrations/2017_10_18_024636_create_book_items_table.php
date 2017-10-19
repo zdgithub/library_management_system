@@ -15,9 +15,7 @@ class CreateBookItemsTable extends Migration
     {
         Schema::create('book_items', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('barcode', 255)->unique();
             $table->unsignedInteger('book_id');
-            $table->text('location');
             $table->integer('state');
             $table->timestamps();
 

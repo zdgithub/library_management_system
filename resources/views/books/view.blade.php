@@ -10,13 +10,31 @@
         <h4><span class="fa fa-info-circle"></span> Book's Information</h4>
     </div>
     <div class="panel-body">
-        <label>ISBN: </label> {{ $book->isbn }}<br>
-        <label>Book Name: </label> {{$book->name}}<br>
-        <label>Author Name: </label> {{$book->author}}<br>
-        <label>Price: </label> ￥: {{$book->price}}<br>
-        <label>Publisher: </label> {{$book->publisher}}<br>
-        <label>Available Copies: </label> {{$book->copies_available()}}<br />
-        <label>Total Copies: </label> {{$book->total_num}}<br>
+        <div class='row'>
+          <div class='col-md-7'>
+            <label>ISBN: </label> {{ $book->isbn }}<br>
+            <label>Book Name: </label> {{$book->name}}<br>
+            <label>Author Name: </label> {{$book->author}}<br>
+            <label>Price: </label> ￥: {{$book->price}}<br>
+            <label>Publisher: </label> {{$book->publisher}}<br>
+            <label>Location: </label> {{$book->location}}<br>
+            <label>Available Copies: </label> {{$book->copies_available()}}<br />
+            <label>Total Copies: </label> {{$book->total_num}}<br>
+            <br>
+          </div>
+          <div class='col-md-5'>
+            <div>
+              <img src="{{ url('/getImage/'.$book->id) }}" width="100%"/>
+            </div>
+            <br>
+            <form method="post" enctype="multipart/form-data" action="{{ url('/upload') }}">
+                  {{ csrf_field() }}
+                <input type="file" name="picture" class='form-control'>
+                <input type='hidden' name='book_id' value="{{$book->id}}">
+              <button type="submit" class='btn btn-success form-control' style='margin-top:5px'>上传</button>
+            </form>
+          </div>
+        </div>
         <br>
         <div class="row">
             <div class='col-md-3' pull-left>
@@ -43,15 +61,13 @@
       <table class="table table-hover">
         <tbody>
           <tr>
-            <th>Barcode</th>
-            <th>Location</th>
+            <th>Id</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
         @foreach($bookItems as $item)
           <tr>
-            <td>{{ $item->barcode }}</td>
-            <td>{{ $item->location }}</td>
+            <td>{{ $item->id }}</td>
             <td>
                 @if ($item->state === 0)
                 <div class="label label-default">{{$item->status()}}</div>

@@ -7,10 +7,6 @@ use App\Profile;
 
 class SiteController extends Controller
 {
-    public function contact_us()
-    {
-        return \View::make('site.contact_us');
-    }
 
     public function index()
     {

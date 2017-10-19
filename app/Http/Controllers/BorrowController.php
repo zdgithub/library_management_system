@@ -15,6 +15,7 @@ class BorrowController extends Controller
     {
         $borrows = Borrow::all();
         $btmp = array();
+        $history = array();
         foreach ($borrows as $item)
         {
             $bitem = BookItem::where('id', $item->book_item_id)->first();
@@ -22,8 +23,14 @@ class BorrowController extends Controller
             {
                 array_push($btmp, $item);
             }
+
+            if($item->return_date != null)
+            {
+                array_push($history, $item);
+            }
         }
         return \View::make('borrows.index')
+        ->with('history', $history)
         ->with('borrows', $btmp);
     }
 //得到借书的弹框
@@ -35,13 +42,13 @@ class BorrowController extends Controller
     public function lend(Request $request)
     {
         $this->validate($request, array(
-        'barcode' => 'required|exists:book_items,barcode',
+        'barcode' => 'required|exists:book_items,id',
         'scode' => 'required|exists:profiles,scode',
         ));
 
         $profile = \App\Profile::where('scode',$request->scode)
                                 ->first();
-        $bookItem = BookItem::where('barcode', $request->barcode)
+        $bookItem = BookItem::where('id', $request->barcode)
                                 ->first();
         if($bookItem->state == 0){
             return \Redirect::to(url('borrows'));
@@ -58,14 +65,24 @@ class BorrowController extends Controller
         }
 
     }
-
-    public function returnBook($id)
+//得到还书的弹框
+    public function returnView()
     {
-        $borrow = Borrow::where('id', $id)->first();
-        BookItem::where('id', $borrow->bookItem->id)->update(array('state' => 1));
+        return \View::make('borrows.return');
+    }
+    public function returnBook(Request $request)
+    {
+        $this->validate($request, array(
+        'barcode' => 'required|exists:book_items,id',
+        ));
 
+        BookItem::where('id', $request->barcode)->update(array('state' => 1));
+
+        $borrow = Borrow::where(['book_item_id'=>$request->barcode, 'return_date'=>null])->first();
         $borrow->return_date = Carbon::today();
         $borrow->save();
+
+        return \Redirect::to(url('borrows'));
     }
 
     public function readerInfo()

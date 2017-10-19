@@ -14,7 +14,7 @@ return [
     | Supported: "local", "ftp", "s3", "rackspace"
     |
     */
-
+    //默认使用本地空间
     'default' => 'local',
 
     /*
@@ -27,7 +27,7 @@ return [
     | will be bound as the Cloud disk implementation in the container.
     |
     */
-
+    //云存储使用Amazon S3
     'cloud' => 's3',
 
     /*
@@ -42,18 +42,27 @@ return [
     */
 
     'disks' => [
-
+        //本地local空间
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),
         ],
-
+        //本地public空间
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
             'visibility' => 'public',
         ],
+        //新建一个本地端upload空间(目录)用于存储上传的文件
+        'uploads' => [
+            'driver' => 'local',
+            //将文件上传到storage/app/uploads目录
+            'root' => storage_path('app/uploads'),
+            // 文件将上传到public/uploads目录 如果需要浏览器直接访问 请设置成这个
+            //'root' => public_path('uploads'),
+        ],
 
+        //Amazon S3
         's3' => [
             'driver' => 's3',
             'key' => 'your-key',

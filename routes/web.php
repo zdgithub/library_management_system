@@ -52,7 +52,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('lend', 'BorrowController@lendView');
     Route::post('lend', 'BorrowController@lend');
 //还一本书
-    Route::post('return/{id}', 'BorrowController@returnBook');
+    Route::get('return', 'BorrowController@returnView');
+    Route::post('return', 'BorrowController@returnBook');
 // 添加一本copy
     Route::get('addcopy/{id}','BookController@addCopyView');
     Route::post('addcopy','BookController@addCopy');
@@ -86,5 +87,14 @@ Route::group(['prefix' => 'reader'], function (){
     Route::post('register', 'Reader\RegisterController@register');
 
 });
+
+//Route::get('/douban/{isbn}', 'BookController@douBan');
+
+Route::post('/upload', 'FileController@uploadImage');
+Route::get('/getImage/{id}', 'FileController@getImage');
+
+Route::get('/super', 'SiteController@dashboard');
+
+
 
 

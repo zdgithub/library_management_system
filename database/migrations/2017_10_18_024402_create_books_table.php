@@ -19,9 +19,10 @@ class CreateBooksTable extends Migration
             $table->string('name');
             $table->string('author');
             $table->string('publisher');
+            $table->float('price');
+            $table->string('location');
             $table->integer('total_num')->unsigned();
             $table->integer('borrowed_num')->unsigned()->default(0);
-            $table->float('price');
             $table->timestamps();
         });
     }

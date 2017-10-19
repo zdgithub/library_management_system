@@ -31,9 +31,8 @@ class BookController extends Controller
     {
         $this->validate($request, array(
             'isbn' => 'required|unique:books,isbn',
-            'book_name' => 'required',
-            'author_name' => 'required',
             'book_price' => 'required',
+            'total_num' => 'required|min:1',
         ));
 
         $book = new Book();
@@ -42,11 +41,22 @@ class BookController extends Controller
         $book->author = $request->author_name;
         $book->price = $request->book_price;
         $book->publisher = $request->publisher;
-        $book->total_num = 0;
+        $book->total_num = $request->total_num;
+        $book->location = $request->location;
         $book->save();
+
+        $num = $request->total_num;
+        for($i = 0; $i < $num; $i++) {
+            $copy = new BookItem();
+            $copy->book_id = $book->id;
+            $copy->state = 1;
+            $copy->save();
+        }
+
 //返回图书列表页面
         return \Redirect::to(route('books'));
     }
+
 //添加一本copy get
     public function addCopyView($id)
     {
@@ -57,19 +67,20 @@ class BookController extends Controller
     public function addCopy(Request $request)
     {
         $this->validate($request, array(
-          'barcode' => 'required',
           'book_id' => 'required',
+          'num' => 'required|min:1'
         ));
-        $copy = new BookItem();
-        $copy->barcode = $request->barcode;
-        $copy->location = $request->location;
-        $copy->book_id = $request->book_id;
-        $copy->state = 1;
-        $copy->save();
+
+        for ($j = 0; $j < $request->num; $j++) {
+            $copy = new BookItem();
+            $copy->book_id = $request->book_id;
+            $copy->state = 1;
+            $copy->save();
+        }
 
         $book = Book::where('id', $request->book_id)->first();
         $tt = $book->total_num;
-        $book->total_num = ++$tt;
+        $book->total_num = $tt + $request->num;
         $book->save();
 
         return \Redirect::to(url('/book/'.$request->book_id));
@@ -106,8 +117,6 @@ class BookController extends Controller
     {
         $this->validate($request, array(
             'isbn' => 'required',
-            'name' => 'required',
-            'author' => 'required',
             'price' => 'required',
             'id' => 'required',
         ));
@@ -117,6 +126,7 @@ class BookController extends Controller
             'name' => $request->name,
             'author' => $request->author,
             'price' => $request->price,
+            'location' => $request->location,
             'publisher' => $request->publisher,
         ));
 
@@ -130,6 +140,7 @@ class BookController extends Controller
         if($book){
 
         $bookItems = \App\BookItem::where('book_id', $book->id)->get();
+
 
         return \View::make('books.view')
                       ->with('book', $book)
@@ -180,6 +191,28 @@ class BookController extends Controller
     public function deleteBookView($id)
     {
         return \View::make('books.delete')->with('id', $id);
+    }
+
+    //豆瓣api
+    public function douBan($isbn)
+    {
+        $requesturl="https://api.douban.com/v2/book/isbn/".$isbn;
+//curl方式获取json数组
+        $curl = curl_init(); //初始化
+        curl_setopt($curl, CURLOPT_URL, $requesturl);//设置抓取的url
+        curl_setopt($curl, CURLOPT_HEADER, 0);//设置头文件的信息作为数据流输出
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);//设置获取的信息以文件流的形式返回，而不是直接输出。
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        $data = curl_exec($curl);//执行命令
+        curl_close($curl);//关闭URL请求
+        //显示获得的数据
+        //dd($data);
+        $obj=json_decode($data);
+
+        $result=$obj->success;
+        if ($result!=1) {
+            {exit('对不起域名受限');}
+        }
     }
 
 }

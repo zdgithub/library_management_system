@@ -8,7 +8,16 @@
         <div class="col-md-10 col-md-offset-1">
               <br/><br/>
               <div class="col-sm-12">
-
+                <a href="{{url('/home')}}">
+                <div class="col-sm-6">
+                  <div class="panel link-panel">
+                    <div class="panel-heading">
+                      <h3><span class="fa fa-home"></span> Dashboard</h3>
+                    </div>
+                  </div>
+                </div>
+                </a>
+                
                 <a href="{{url('/addbook')}}">
                 <div class="col-sm-6">
                   <div class="panel link-panel">
@@ -34,18 +43,6 @@
                   <div class="panel link-panel">
                     <div class="panel-heading">
                       <h3><span class="fa fa-share"></span> Borrow & Return</h3>
-
-                    </div>
-
-                  </div>
-                </div>
-                </a>
-
-                <a href="{{url('')}}">
-                <div class="col-sm-6">
-                  <div class="panel link-panel">
-                    <div class="panel-heading">
-                      <h3><span class="fa fa-users"></span> Borrow Statistics</h3>
 
                     </div>
 

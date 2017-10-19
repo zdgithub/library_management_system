@@ -19,6 +19,7 @@
                             <th>Author</th>
                             <th>Publisher</th>
                             <th>Price</th>
+                            <th>Location</th>
                             <th>Available/Total Number</th>
                             <th>Copies Detail</th>
                         </tr>
@@ -31,6 +32,7 @@
                             <td>{{ $b->author }}</td>
                             <td>{{ $b->publisher }}</td>
                             <td>{{ $b->price }}</td>
+                            <td>{{ $b->location }}</td>
                             <td>{{ $b->copies_available()}}/{{ $b->total_num }}</td>
                             <td>
                               <a href="{{url('/')}}/reader/book/{{$b->id}}"><i class='fa fa-angle-double-right'></i> All Copies</a>

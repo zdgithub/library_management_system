@@ -21,6 +21,7 @@ class SearchController extends Controller
                         '<td><a href="'.url('/').'/reader/book/'.$book->id.'">'.$book->name.'</a></td>'.
                         '<td>'.$book->author.'</td>'.
                         '<td>'.$book->publisher.'</td>'.
+                        '<td>'.$book->location.'</td>'.
                         '<td>'.$book->copies_available().'</td>'.
                         '<td>'.$book->total_num.'</td>'.
                     '</tr>';
@@ -44,6 +45,7 @@ class SearchController extends Controller
                         '<td><a href="'.url('/').'/reader/book/'.$book->id.'">'.$book->name.'</a></td>'.
                         '<td>'.$book->author.'</td>'.
                         '<td>'.$book->publisher.'</td>'.
+                        '<td>'.$book->location.'</td>'.
                         '<td>'.$book->copies_available().'</td>'.
                         '<td>'.$book->total_num.'</td>'.
                     '</tr>';

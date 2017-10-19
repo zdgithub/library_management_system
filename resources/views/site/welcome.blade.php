@@ -114,6 +114,7 @@
                             <th>Name</th>
                             <th>Author</th>
                             <th>Publisher</th>
+                            <th>Location</th>
                             <th>Available Copies</th>
                             <th>Total Copies</th>
                           </tr>

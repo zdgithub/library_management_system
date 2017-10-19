@@ -7,18 +7,19 @@
 <div class="col-sm-12">
     <div class="panel">
         <div class="panel-heading">
-            <button onclick="lend()" class="btn btn-primary pull-right">lend a book</button>
-            <h3>Current Borrows</h3>
+          <button onclick="returnBook()" class="btn btn-danger pull-right">Return</button>
+          <button onclick="lend()" class="btn btn-primary pull-right" style='margin-right:7px'> Lend </button>
+          <h3>Current Borrows</h3>
         </div>
         <div class="panel-body">
             <table class="table responsive-table table-striped" id='borrowtable'>
                 <thead>
                     <tr>
                         <th>
-                            Borrower
+                            Barcode
                         </th>
                         <th>
-                            Barcode
+                            User Name
                         </th>
                         <th>
                             Book Name
@@ -29,18 +30,15 @@
                         <th>
                             Fine
                         </th>
-                        <th>
-                            Action
-                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($borrows as $borrow)
                     <tr>
+                        <td>{{$borrow->bookItem->id}}</td>
                         <td>
                             {{$borrow->user->name}}
                         </td>
-                        <td>{{$borrow->bookItem->barcode}}</td>
                         <td>
                             {{$borrow->bookItem->book->name}}
                         </td>
@@ -62,40 +60,66 @@
                         <td>
                             {{$borrow->fine()}}
                         </td>
-                        <td>
-                         <button onclick="returnBook({{$borrow->id}})" class="btn btn-default">RETURN</button>
-                        </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
+</div>
 
+<div class="col-sm-12">
+    <div class="panel">
+        <div class="panel-heading">
+          <h3>History Borrows</h3>
+        </div>
+        <div class="panel-body">
+          <table class="table responsive-table table-striped" id='historytable'>
+            <thead>
+              <tr>
+                <th>Barcode</th>
+                <th>User Name</th>
+                <th>Book Name</th>
+                <th>Return Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach($history as $his)
+              <tr>
+                <td>{{$his->bookItem->id}}</td>
+                <td>
+                    {{$his->user->name}}
+                </td>
+                <td>
+                    {{$his->bookItem->book->name}}
+                </td>
+                <td>{{ $his->return_date }}</td>
+              </tr>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
+    </div>
 </div>
 
 <script>
     $('#borrowtable').dataTable();
+    $('#historytable').dataTable();
 
     function lend(){
+        $('#def-modal').modal('hide');
         $.get("{{url('/')}}/lend",function(data){
             $('#def-modal-content').html(data);
         });
         $('#def-modal').modal('show');
     }
 
-    function returnBook(id){
-        $.ajax({
-                url: "{{url('/')}}/return/"+id,
-                method: "POST",
-                data: {_token:"{{Session::token()}}"},
-        }).fail((data) => {
-            console.log(data);
-        }).done((data) => {
-            location.reload();
+    function returnBook(){
+        $('#def-modal').modal('hide');
+        $.get("{{url('/')}}/return",function(data){
+            $('#def-modal-content').html(data);
         });
+        $('#def-modal').modal('show');
     }
-
-
 </script>
 @endsection

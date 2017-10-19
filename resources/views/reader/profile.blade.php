@@ -24,7 +24,7 @@
             <input class="form-control" name="sex" value=""><br>
             <label>University:</label><br>
             <input class="form-control" name="school" value=""><br>
-            <label>Student Number:</label><br>
+            <label><span style='color:red'>*</span>Student Number:</label><br>
             <input class="form-control" name="scode" value=""><br>
             <label>Major:</label><br>
             <input class="form-control" name="major" value=""><br>
@@ -36,7 +36,7 @@
             <input class="form-control" name="sex" value="{{$user_info->sex}}"><br>
             <label>University:</label><br>
             <input class="form-control" name="school" value="{{$user_info->school}}"><br>
-            <label>Student Number:</label><br>
+            <label><span style='color:red'>*</span>Student Number:</label><br>
             <input class="form-control" name="scode" value="{{$user_info->scode}}"><br>
             <label>Major:</label><br>
             <input class="form-control" name="major" value="{{$user_info->major}}"><br>
