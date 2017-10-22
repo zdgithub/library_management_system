@@ -3,6 +3,14 @@
 @section('title','Borrow Books')
 
 @section('content')
+@if(Session::has('msg'))
+<div class="alert alert-danger">
+    <a href="#" class="close" data-dismiss="alert">
+        &times;
+    </a>
+    {{ Session::get('msg') }}
+</div>
+@endif
 <br>
 <div class="col-sm-12">
     <div class="panel">
@@ -35,7 +43,7 @@
                 <tbody>
                     @foreach($borrows as $borrow)
                     <tr>
-                        <td>{{$borrow->bookItem->id}}</td>
+                        <td>{{$borrow->bookItem->barcode}}</td>
                         <td>
                             {{$borrow->user->name}}
                         </td>
@@ -80,20 +88,22 @@
                 <th>Barcode</th>
                 <th>User Name</th>
                 <th>Book Name</th>
+                <th>Borrow Date</th>
                 <th>Return Date</th>
               </tr>
             </thead>
             <tbody>
               @foreach($history as $his)
               <tr>
-                <td>{{$his->bookItem->id}}</td>
+                <td>{{$his->bookItem->barcode}}</td>
                 <td>
                     {{$his->user->name}}
                 </td>
                 <td>
                     {{$his->bookItem->book->name}}
                 </td>
-                <td>{{ $his->return_date }}</td>
+                <td>{{ $his->borrowDate() }}</td>
+                <td>{{ $his->returnDate() }}</td>
               </tr>
               @endforeach
             </tbody>

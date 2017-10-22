@@ -3,6 +3,15 @@
 @section('title','Dashboard')
 
 @section('content')
+@if($scode == null)
+<div class="alert alert-danger">
+    <a href="#" class="close" data-dismiss="alert">
+        &times;
+    </a>
+    You haven't bound your student number, please bind it in time so that you can borrow some books!
+</div>
+@endif
+<br>
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">

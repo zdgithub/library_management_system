@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class BookItem extends Model
 {
+    protected $fillable = [
+        'state',
+    ];
     //获取所属的书籍
     public function book()
     {

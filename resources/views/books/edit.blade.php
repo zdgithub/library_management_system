@@ -1,6 +1,6 @@
 <form method="POST" action="{{route('book.edit')}}" >
   <label> ISBN: </label>
-  <input type="textbox"  class="form-control" name="isbn" value="{{$book_info->isbn}}">
+  <input type="textbox"  class="form-control" readonly name="isbn" value="{{$book_info->isbn}}">
   <br>
   <label> Book's Name: </label>
   <input type="textbox"  class="form-control" name="name" value="{{$book_info->name}}">

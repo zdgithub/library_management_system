@@ -3,7 +3,7 @@
   <h3>Return a Book</h3>
 </div>
 <form class="form" action="{{url('/')}}/return" method="POST" onkeydown=" if (event.keyCode == 13) {
-     return false;}">
+     return true;}">
 
 <div class="modal-body">
   <label>Book's Barcode:</label>

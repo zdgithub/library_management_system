@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Book;
 use App\BookItem;
+use App\Borrow;
 
 class BookController extends Controller
 {
@@ -31,8 +32,8 @@ class BookController extends Controller
     {
         $this->validate($request, array(
             'isbn' => 'required|unique:books,isbn',
-            'book_price' => 'required',
-            'total_num' => 'required|min:1',
+            'book_price' => 'required|numeric|min:0',
+            'total_num' => 'required|integer|min:1',
         ));
 
         $book = new Book();
@@ -51,6 +52,9 @@ class BookController extends Controller
             $copy->book_id = $book->id;
             $copy->state = 1;
             $copy->save();
+
+            $copy->barcode = $copy->id + 100000;
+            $copy->save();
         }
 
 //返回图书列表页面
@@ -68,13 +72,16 @@ class BookController extends Controller
     {
         $this->validate($request, array(
           'book_id' => 'required',
-          'num' => 'required|min:1'
+          'num' => 'required|integer|min:1'
         ));
 
         for ($j = 0; $j < $request->num; $j++) {
             $copy = new BookItem();
             $copy->book_id = $request->book_id;
             $copy->state = 1;
+            $copy->save();
+
+            $copy->barcode = $copy->id + 100000;
             $copy->save();
         }
 
@@ -94,15 +101,20 @@ class BookController extends Controller
     public function deleteCopy(Request $request)
     {
         $item = BookItem::where('id', $request->id)->first();
-
-        BookItem::where('id', $request->id)->delete();
-
-        $book = Book::where('id', $item->book->id)->first();
+        $book = Book::where('id', $item->book_id)->first();
         $tt = $book->total_num;
         $book->total_num = --$tt;
-        $book->save();
 
-        return \Redirect::to(url('/book/'.$item->book->id));
+        Borrow::where('book_item_id', $request->id)->delete();
+        BookItem::where('id', $request->id)->delete();
+
+        if($book->total_num == 0){
+            $book->delete();
+            return \Redirect::to(route('books'));
+        }else{
+            $book->save();
+            return \Redirect::to(url('/book/'.$book->id));
+        }
     }
 
 //编辑图书的modal框
@@ -117,7 +129,7 @@ class BookController extends Controller
     {
         $this->validate($request, array(
             'isbn' => 'required',
-            'price' => 'required',
+            'price' => 'required|numeric|min:0',
             'id' => 'required',
         ));
 
@@ -173,16 +185,23 @@ class BookController extends Controller
         $can = true;
         //该书copy已被借出去,则该书不可以删除
         foreach ($bookItems as $item) {
-            if ($item->state === 0) {
+            if ($item->state == 0) {
                 $can = false;
                 break;
             }
         }
 
         if (!$can){
-            return \Redirect::to(url('/book/'.$request->id));
+            return \Redirect::to(url('/book/'.$request->id))
+             ->with('msg', "You can not delete the book, because a copy of it is borrowed.");
         }else{
+            $items = BookItem::where('book_id', $request->id)->get();
+            foreach ($items as $it) {
+                Borrow::where('book_item_id', $it->id)->delete();
+            }
+
             BookItem::where('book_id', $request->id)->delete();
+            \App\Models\Image::where('book_id', $request->id)->delete();
             Book::where('id', $request->id)->delete();
             return \Redirect::to(route('books'));
         }

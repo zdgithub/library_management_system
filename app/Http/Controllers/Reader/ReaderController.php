@@ -16,6 +16,11 @@ class ReaderController extends Controller
      */
     public function index()
     {
-        return view('reader.dash');
+      //获取当前登录用户的id
+      $uid = auth()->guard('reader')->user()->id;
+      $prf = \App\Profile::where('reader_id', $uid)->first();
+
+      return \View::make('reader.dash')->with('scode', $prf);
+
     }
 }

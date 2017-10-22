@@ -1,12 +1,19 @@
 <div class="top-panel">
     <span class="top-elements">
+    @if(Auth::user()->role == 1)
         <a href="{{url('/home')}}"><span class="fa fa-home"></span> Dashboard</a>
         <a href="{{url('addbook')}}"><span class='fa fa-plus'></span> Add Book</a>
         <a href="{{url('books')}}"><span class="fa fa-book"></span> Books List</a>
         <a href="{{url('borrows')}}"><span class="fa fa-share"></span> Borrow & Return</a>
-        <!--<a href="{{url('settings')}}"><span class="fa fa-cog"></span> Settings</a> -->
-        <!--<a href="{{url('borrowers')}}"><span class="fa fa-users"></span> Borrowers</a>-->
-        <!--<a href="{{url('contact_us')}}"><span class="fa fa-phone"></span> Contact Us</a> -->
+    @elseif(Auth::user()->role == 2)
+        <a href="{{url('/home')}}"><span class="fa fa-home"></span> Dashboard</a>
+        <a href="{{url('/super/permission')}}"><span class="fa fa-cog"></span> Set Permission</a>
+        <a href="{{url('/super/lib')}}"><span class="fa fa-users"></span> Delete Librarians</a>
+        <a href="{{url('/super/user')}}"><span class="fa fa-users"></span> Delete Users</a>
+    @else
+        <p style='font-size:20px'>You have registered as a librarian , but the super administrator hasn't set access permission for you.</p>
+        <p style='font-size:18px'>Please contact the super administrator!</p>
+    @endif
     </span>
 </div>
 

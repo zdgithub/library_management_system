@@ -3,6 +3,14 @@
 @section('title',$book->name)
 
 @section('content')
+@if(Session::has('msg'))
+<div class="alert alert-danger">
+    <a href="#" class="close" data-dismiss="alert">
+        &times;
+    </a>
+    {{ Session::get('msg') }}
+</div>
+@endif
 <br>
 <div class="col-sm-6">
 <div class="panel">
@@ -29,9 +37,10 @@
             <br>
             <form method="post" enctype="multipart/form-data" action="{{ url('/upload') }}">
                   {{ csrf_field() }}
-                <input type="file" name="picture" class='form-control'>
                 <input type='hidden' name='book_id' value="{{$book->id}}">
-              <button type="submit" class='btn btn-success form-control' style='margin-top:5px'>上传</button>
+
+                <input type="file" id='pic' name="picture" class='form-control' accept="image/gif, image/jpeg, image/png">
+              <button type="submit" class='btn btn-success form-control' style='margin-top:5px'>Upload</button>
             </form>
           </div>
         </div>
@@ -61,13 +70,13 @@
       <table class="table table-hover">
         <tbody>
           <tr>
-            <th>Id</th>
+            <th>Barcode</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
         @foreach($bookItems as $item)
           <tr>
-            <td>{{ $item->id }}</td>
+            <td>{{ $item->barcode }}</td>
             <td>
                 @if ($item->state === 0)
                 <div class="label label-default">{{$item->status()}}</div>
@@ -91,6 +100,7 @@
     </div>
 </div>
 </div>
+
 <script>
 function addCopy(id){
     $.get("{{url('/')}}/addcopy/"+id,function(data){
@@ -155,5 +165,22 @@ function deleteModal(id){
 function deleteBookInfo(){
     document.getElementById('deleteButton').click();
 }
+
+$(function(){
+    $(".input-fileup").on("change","input[type='file']",function(){
+        var filePath=$(this).val();
+        if(filePath.indexOf("jpg")!=-1 || filePath.indexOf("png")!=-1){
+            $(".fileerrorTip1").html("").hide();
+            var arr=filePath.split('\\');
+            var fileName=arr[arr.length-1];
+            $(".showFileName1").html(fileName);
+        }else{
+            $(".showFileName1").html("");
+            $(".fileerrorTip1").html("You haven't uploaded the file or the file type you uploaded is wrong！").show();
+            return false
+        }
+    })
+})
+
 </script>
 @endsection

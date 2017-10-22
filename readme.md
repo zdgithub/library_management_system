@@ -13,7 +13,7 @@ First clone the repo
 
 Edit the ENV File then
 
-Then get into the directory 
+Then get into the directory
 
 ```zsh
 
@@ -21,7 +21,7 @@ Then get into the directory
 
 ```
 
-Now migrate the database 
+Now migrate the database
 
 ```zsh
 
@@ -33,7 +33,7 @@ Seed the dummy data if you need (Optional)
 
 ```zsh
 
-	$ php aritsan db:seed
+	$ php artisan db:seed
 
 ```
 
@@ -42,7 +42,7 @@ Now Run the server
 
 ```zsh
 
-	$ php aritsan serve
+	$ php artisan serve
 
 ```
 

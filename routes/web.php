@@ -19,7 +19,7 @@ Route::get('/ad', function () {
 });
 
 Route::get('/NotFound', function () {
-    return view('errors.503');
+    return view('errors.404');
 });
 
 //welcome页根据书名查找书籍
@@ -93,8 +93,18 @@ Route::group(['prefix' => 'reader'], function (){
 Route::post('/upload', 'FileController@uploadImage');
 Route::get('/getImage/{id}', 'FileController@getImage');
 
-Route::get('/super', 'SiteController@dashboard');
+Route::group(['middleware' => 'auth', 'prefix' => 'super'], function () {
+    Route::get('/permission', 'SiteController@permissionView');
+    Route::post('/permission/{id}', 'SiteController@permission');
+    Route::post('/cancel/{id}', 'SiteController@cancelPermit');
 
+    Route::get('/lib', 'SiteController@libView');
 
+    Route::get('/deletelib/{id}', 'SiteController@deleteLibView');
+    Route::post('/deletelib', 'SiteController@deleteLib');
 
+    Route::get('/user', 'SiteController@userView');
 
+    Route::get('/deleteuser/{id}', 'SiteController@deleteUserView');
+    Route::post('deleteuser', 'SiteController@deleteUser');
+});

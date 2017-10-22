@@ -11,7 +11,8 @@
         </div>
         <div class="panel-body">
             <div>
-                <form class="form" method="POST" action="{{route('book.add')}}">
+                <form class="form" method="POST" action="{{route('book.add')}}" onkeydown=" if (event.keyCode == 13) {
+     return false;}">
                     @if(\Session::get('book_add_error'))
                         <div class="alert alert-danger">{{\Session::get('book_add_error')}} <span class="close" data-dismiss="alert">&times;</span></div>
                     @endif

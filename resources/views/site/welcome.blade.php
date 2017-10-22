@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Library</title>
 
         <link href="{{asset('css/app.css')}}" rel="stylesheet">
         <link rel="stylesheet" href="{{asset('assets/jquery/jquery-ui.min.css')}}">
@@ -14,6 +14,7 @@
         <style>
             html, body {
                 background-color: #fff;
+                background-image: url({{ URL::asset('images/bkg2.jpg')}});
                 color: black;
                 height: 100vh;
                 margin: 0;
@@ -43,6 +44,19 @@
                 text-align: center;
             }
 
+            .transbox
+            {
+              width: 1100px;
+              margin:40px;
+              background-color: #ffffff;
+              border: 1px solid black;
+              border-radius:10px;
+              /* for IE */
+              filter:alpha(opacity=100);
+              /* CSS3 standard */
+              opacity:1;
+            }
+
             .title {
                 font-size: 84px;
                 color: #20B2AA;
@@ -65,7 +79,9 @@
               font-size: 20px;
             }
 
-            th { text-align: center; }
+            .search_table thead tr th { text-align: center; color: black; border:1px solid black;}
+            .search_table tbody tr td {text-align: center; color: black; border:1px solid black;}
+
 
         </style>
 
@@ -86,14 +102,14 @@
                 </div>
             @endif
 
-            <div class="content">
+            <div class="content transbox">
                 <div class="title m-b-md">
                      Welcome to our library!
                 </div>
                 <div class='row'>
                 <div class='col-md-12'>
                 <div class='col-md-3'>
-                  <select id='condition' class='form-control' style='margin-top:10px'>
+                  <select id='condition' class='form-control' style='margin-top:10px; border: 2px solid black;color:black'>
                     <option value='bookname'>Book's Name</option>
                     <option value='author'>Author</option>
                   </select>
@@ -101,14 +117,14 @@
                 <div class="col-md-9">
                     <div class="panel">
                         <div class="panel-heading" style="height:50px;">
-                            <input class="col-sm-7 form-control" type="textbox" placeholder="Search . . ." style='border:2px    #778899 solid' id="search"/>
+                            <input class="col-sm-7 form-control" type="textbox" placeholder="Search . . ." style='border:2px black solid; color:black' id="search"/>
                         </div>
                     </div>
                 </div>
                 </div>
                 </div>
-                <div class="search_table">
-                    <table class="table table-bordered table-hover" id='searchTable'>
+                <div class="search_table" style='width:800px; margin-left:90px'>
+                    <table class="table table-bordered" id='searchTable' style='border:1px solid black;'>
                         <thead>
                           <tr>
                             <th>Name</th>

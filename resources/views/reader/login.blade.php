@@ -37,7 +37,7 @@
                                 @endif
                             </div>
                         </div>
-
+                        <!--
                         <div class="form-group">
                           <div class='row'>
                             <div class="col-md-7 pull-left">
@@ -53,7 +53,7 @@
                                     </a>
                             </div>
                           </div>
-                        </div>
+                        </div>-->
 
                         <div class="form-group">
                             <div class="col-md-8 col-md-offset-4">

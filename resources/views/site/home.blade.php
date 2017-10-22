@@ -7,6 +7,7 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
               <br/><br/>
+          @if(Auth::user()->role == 1)
               <div class="col-sm-12">
                 <a href="{{url('/home')}}">
                 <div class="col-sm-6">
@@ -17,7 +18,7 @@
                   </div>
                 </div>
                 </a>
-                
+
                 <a href="{{url('/addbook')}}">
                 <div class="col-sm-6">
                   <div class="panel link-panel">
@@ -27,7 +28,7 @@
                   </div>
                 </div>
                 </a>
-                
+
                 <a href="{{url('/books')}}">
                 <div class="col-sm-6">
                   <div class="panel link-panel" >
@@ -49,8 +50,52 @@
                   </div>
                 </div>
                 </a>
-
               </div>
+          @elseif(Auth::user()->role == 2)
+              <div class="col-sm-12">
+
+                <a href="{{url('/home')}}">
+                <div class="col-sm-6">
+                  <div class="panel link-panel">
+                    <div class="panel-heading">
+                      <h3><span class="fa fa-home"></span> Dashboard</h3>
+                    </div>
+                  </div>
+                </div>
+                </a>
+
+                <a href="{{url('/super/permission')}}">
+                <div class="col-sm-6">
+                  <div class="panel link-panel">
+                    <div class="panel-heading">
+                      <h3><span class="fa fa-cog"></span> Set Permission</h3>
+                    </div>
+                  </div>
+                </div>
+                </a>
+
+                <a href="{{url('/super/lib')}}">
+                <div class="col-sm-6">
+                  <div class="panel link-panel">
+                    <div class="panel-heading">
+                      <h3><span class="fa fa-users"></span> Delete Librarians</h3>
+                    </div>
+                  </div>
+                </div>
+                </a>
+
+                <a href="{{url('/super/user')}}">
+                <div class="col-sm-6">
+                  <div class="panel link-panel">
+                    <div class="panel-heading">
+                      <h3><span class="fa fa-users"></span> Delete Users</h3>
+                    </div>
+                  </div>
+                </div>
+                </a>
+              </div>
+          @else
+          @endif
         </div>
     </div>
 </div>

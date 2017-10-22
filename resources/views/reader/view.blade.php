@@ -17,6 +17,7 @@
             <label>Author Name: </label> {{$book->author}}<br>
             <label>Price: </label> ￥: {{$book->price}}<br>
             <label>Publisher: </label> {{$book->publisher}}<br>
+            <label>Location: </label> {{ $book->location}}<br>
             <label>Available Copies: </label> {{$book->copies_available()}}<br />
             <label>Total Copies: </label> {{$book->total_num}}<br>
             <br>
@@ -44,12 +45,12 @@
       <table class="table table-hover">
         <tbody>
           <tr>
-            <th>Id</th>
+            <th>Barcode</th>
             <th>Status</th>
           </tr>
         @foreach($bookItems as $item)
           <tr>
-            <td>{{ $item->id }}</td>
+            <td>{{ $item->barcode }}</td>
             <td>
             @if ($item->state === 0)
             <div class="label label-default">{{$item->status()}}</div>

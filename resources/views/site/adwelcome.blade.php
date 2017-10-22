@@ -14,6 +14,7 @@
         <style>
             html, body {
                 background-color: #fff;
+                background-image: url({{ URL::asset('images/bkg3.jpg')}});
                 color: black;
                 height: 100vh;
                 margin: 0;
@@ -41,6 +42,19 @@
 
             .content {
                 text-align: center;
+            }
+
+            .transbox
+            {
+              width: 1000px;
+              margin:40px;
+              background-color: #ffffff;
+              border: 1px solid black;
+              border-radius:10px;
+              /* for IE */
+              filter:alpha(opacity=100);
+              /* CSS3 standard */
+              opacity:1;
             }
 
             .title {
@@ -86,7 +100,7 @@
                 </div>
             @endif
 
-            <div class="content">
+            <div class="content transbox">
                 <div class="title m-b-md">
                      Welcome to our library!
                 </div>

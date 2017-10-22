@@ -20,8 +20,7 @@
               <thead>
                 <tr>
                   <th>Barcode</th>
-                  <th>Name</th>
-                  <th>Location</th>
+                  <th>Book Name</th>
                   <th>Borrow Date</th>
                   <th>Receive Date</th>
                   <th>Status</th>
@@ -33,8 +32,7 @@
                 <tr>
                   <td>{{ $cur->bookItem->barcode }}</td>
                   <td>{{ $cur->bookItem->book->name }}</td>
-                  <td>{{ $cur->bookItem->location }}</td>
-                  <td>{{ $cur->borrow_date }}</td>
+                  <td>{{ $cur->borrowDate() }}</td>
                   <td>{{ $cur->receiveDate() }}</td>
                   <td>{{ $cur->status() }}</td>
                   <td>{{ $cur->fine() }}</td>
@@ -54,8 +52,7 @@
               <thead>
                 <tr>
                   <th>Barcode</th>
-                  <th>Name</th>
-                  <th>Location</th>
+                  <th>Book Name</th>
                   <th>Borrow Date</th>
                   <th>Return Date</th>
                 </tr>
@@ -65,9 +62,8 @@
                 <tr>
                   <td>{{ $his->bookItem->barcode }}</td>
                   <td>{{ $his->bookItem->book->name }}</td>
-                  <td>{{ $his->bookItem->location }}</td>
-                  <td>{{ $his->borrow_date }}</td>
-                  <td>{{ $his->return_date }}</td>
+                  <td>{{ $his->borrowDate() }}</td>
+                  <td>{{ $his->returnDate() }}</td>
                 </tr>
                 @endforeach
               </tbody>

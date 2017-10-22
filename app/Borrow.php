@@ -7,7 +7,7 @@ use Carbon\Carbon;
 
 class Borrow extends Model
 {
-    protected $dates = ['created_at', 'updated_at', 'borrow_date'];
+    protected $dates = ['created_at', 'updated_at', 'borrow_date', 'return_date'];
     public function user()
     {
         return $this->belongsTo('App\Models\Reader', 'reader_id');
@@ -20,14 +20,14 @@ class Borrow extends Model
 //应还日期,注意这个为函数
     public function receiveDate()
     {
-        return $this->borrow_date->addDays(30);
+        return $this->borrow_date->addDays(30)->toDateString();
     }
 
     public function status()
     {
         if ($this->bookItem->state == 0) {
             $today = Carbon::today();
-            $receive = $this->receiveDate();
+            $receive = $this->borrow_date->addDays(30);
             $days_left = $today->diffInDays($receive, false);
 
             if ($days_left < 0) {
@@ -46,11 +46,23 @@ class Borrow extends Model
         }
 
         $today = Carbon::today();
-        $receive_date = $this->receiveDate();
+        $receive_date = $this->borrow_date->addDays(30);
         $days_gone = $receive_date->diffInDays($today, false);
 
         $total_fine = 0.1 * $days_gone;
 
         return $total_fine;
     }
+//格式化输出日期
+    public function returnDate()
+    {
+        return $this->return_date->toDateString();
+    }
+
+    public function borrowDate()
+    {
+        return $this->borrow_date->toDateString();
+    }
+
+
 }

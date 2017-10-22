@@ -17,11 +17,18 @@ class FileController extends Controller
             $name = $photo->getClientOriginalName();
             $store_result = $photo->store('uploads');
 
-            $Image = new \App\Models\Image();
-            $Image->book_id = $request->book_id;
-            $Image->file_name = $name;
-            $Image->file_path = $store_result;
-            $Image->save();
+            $img = \App\Models\Image::where('book_id', $request->book_id)->first();
+            if($img == null){
+                $Image = new \App\Models\Image();
+                $Image->book_id = $request->book_id;
+                $Image->file_name = $name;
+                $Image->file_path = $store_result;
+                $Image->save();
+            }else{
+               $img->file_name = $name;
+               $img->file_path = $store_result;
+               $img->save();
+            }
 
         }
         return \Redirect::to(url('/book/'.$request->book_id));

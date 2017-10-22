@@ -42,16 +42,16 @@ class BorrowController extends Controller
     public function lend(Request $request)
     {
         $this->validate($request, array(
-        'barcode' => 'required|exists:book_items,id',
+        'barcode' => 'required|exists:book_items,barcode',
         'scode' => 'required|exists:profiles,scode',
         ));
 
         $profile = \App\Profile::where('scode',$request->scode)
                                 ->first();
-        $bookItem = BookItem::where('id', $request->barcode)
+        $bookItem = BookItem::where('barcode', $request->barcode)
                                 ->first();
         if($bookItem->state == 0){
-            return \Redirect::to(url('borrows'));
+            return \Redirect::to(url('borrows'))->with('msg', 'The book is borrowed by others now!');
         }else if($bookItem->state == 1){
             $bookItem->state = 0; //被借出
             $bookItem->save();
@@ -73,16 +73,21 @@ class BorrowController extends Controller
     public function returnBook(Request $request)
     {
         $this->validate($request, array(
-        'barcode' => 'required|exists:book_items,id',
+        'barcode' => 'required|exists:book_items,barcode',
         ));
 
-        BookItem::where('id', $request->barcode)->update(array('state' => 1));
+        $bookitem = BookItem::where('barcode', $request->barcode)->first();
+        if($bookitem->state == 1){ //要还的书并没有被借
+            return \Redirect::to(url('borrows'))
+            ->with('msg', "The book you want to return isn't borrowed!");
+        }else{
+            $bookitem->update(array('state' => 1));
 
-        $borrow = Borrow::where(['book_item_id'=>$request->barcode, 'return_date'=>null])->first();
-        $borrow->return_date = Carbon::today();
-        $borrow->save();
-
-        return \Redirect::to(url('borrows'));
+            $borrow = Borrow::where(['book_item_id'=>$bookitem->id, 'return_date'=>null])->first();
+            $borrow->return_date = Carbon::today();
+            $borrow->save();
+            return \Redirect::to(url('borrows'));
+        }
     }
 
     public function readerInfo()
